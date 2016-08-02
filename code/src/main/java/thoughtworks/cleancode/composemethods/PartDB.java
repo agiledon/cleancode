@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartDb {
+public class PartDB {
     private static final String DRIVER_CLASS = "";
     private static final String DB_URL = "";
     private static final String USER = "";

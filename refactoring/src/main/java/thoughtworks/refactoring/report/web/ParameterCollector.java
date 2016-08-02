@@ -1,10 +1,10 @@
 package thoughtworks.refactoring.report.web;
 
 import thoughtworks.refactoring.report.engine.*;
-import thoughtworks.refactoring.report.servlet.ServletRequest;
+import thoughtworks.refactoring.report.servlet.ServletHttpRequest;
 
 public class ParameterCollector {
-    private void fillParameters(ServletRequest request, ParameterGraph parameterGraph) {
+    private void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
         for (Parameter para : parameterGraph.getParmaeters()) {
             if (para instanceof SimpleParameter) {
                 SimpleParameter simplePara = (SimpleParameter) para;

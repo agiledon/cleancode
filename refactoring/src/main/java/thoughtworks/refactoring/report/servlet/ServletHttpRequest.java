@@ -1,5 +1,5 @@
 package thoughtworks.refactoring.report.servlet;
 
-public interface ServletRequest {
+public interface ServletHttpRequest {
     String[] getParameterValues(String key);
 }

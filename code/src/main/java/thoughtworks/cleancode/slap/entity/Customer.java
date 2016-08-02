@@ -1,4 +1,4 @@
 package thoughtworks.cleancode.slap.entity;
 
-public class ShoppingCart {
+public class Customer {
 }

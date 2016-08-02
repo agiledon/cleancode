@@ -1,15 +1,16 @@
 package thoughtworks.cleancode.slap.service;
 
-import thoughtworks.cleancode.slap.entity.Order;
-import thoughtworks.cleancode.slap.entity.ShoppingCart;
+import thoughtworks.cleancode.slap.entity.Customer;
+import thoughtworks.cleancode.slap.entity.Training;
 import thoughtworks.cleancode.slap.infrastructure.DatabasePool;
 
 import java.sql.*;
+import java.util.List;
 
 public class OrderService {
     private DatabasePool dbPool;
 
-    public void addOrder(ShoppingCart cart, String userName, Order order) throws SQLException {
+    public void subscribTrainings(List<Training> trainings, Customer customer) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
         Statement s = null;
@@ -18,13 +19,12 @@ public class OrderService {
         try {
             s = c.createStatement();
             transactionState = c.getAutoCommit();
-            int userKey = getUserKey(userName, c, ps, rs);
             c.setAutoCommit(false);
-            addSingleOrder(order, c, ps, userKey);
-            int orderKey = getOrderKey(s, rs);
-            addLineItems(cart, c, orderKey);
+            for (Training training : trainings) {
+                addTrainingItem(customer, training);
+            }
+            addOrder(customer, trainings);
             c.commit();
-            order.setOrderKeyFrom(orderKey);
         } catch (SQLException sqlx) {
             s = c.createStatement();
             c.rollback();
@@ -41,21 +41,13 @@ public class OrderService {
         }
     }
 
-    private void addLineItems(ShoppingCart cart, Connection connection, int orderKey) {
+    private void addOrder(Customer customer, List<Training> trainings) {
 
 
     }
 
-    private int getOrderKey(Statement statement, ResultSet rs) {
-        return 0;
-    }
-
-    private void addSingleOrder(Order order, Connection connection, PreparedStatement ps, int userKey) {
+    private void addTrainingItem(Customer customer, Training training) {
 
 
-    }
-
-    private int getUserKey(String userName, Connection connection, PreparedStatement ps, ResultSet rs) {
-        return 0;
     }
 }

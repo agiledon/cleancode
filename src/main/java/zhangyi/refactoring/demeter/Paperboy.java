@@ -1,8 +1,7 @@
 package zhangyi.refactoring.demeter;
 
 public class Paperboy {
-    private Customer myCustomer;
-    public void pay(float payment) {
+    public void charge(Customer myCustomer, float payment) {
         Wallet theWallet = myCustomer.getWallet();
         if (theWallet.getTotalMoney() > payment) {
             theWallet.subtractMoney(payment);

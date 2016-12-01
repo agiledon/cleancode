@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderService {
     private DatabasePool dbPool;
 
-    public void subscribTrainings(List<Training> trainings, Customer customer) throws SQLException {
+    public void placeOrder(List<Training> trainings, Customer customer) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
         Statement s = null;

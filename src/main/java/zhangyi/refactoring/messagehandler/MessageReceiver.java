@@ -8,11 +8,7 @@ package zhangyi.refactoring.messagehandler;/*                                   
 
 import java.util.Queue;
 
-public class MessageReceiver {
-    public MessageReceiver() {
-    }
+public abstract class MessageReceiver {
 
-    public MessageReader getMessageFor(MessageType messageType, Queue queue) {
-        return null;
-    }
+    public abstract MessageReader getMessageFor(MessageType messageType, String identifier, Queue queue);
 }

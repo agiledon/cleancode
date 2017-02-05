@@ -20,7 +20,7 @@ public class MessageWriter {
     public void selectBlock(String messageHeader) {
     }
 
-    public void setFieldValue(Profile profile, String identifier) {
+    public void setFieldValue(Profile profile, Object value) {
     }
 
     public boolean selectBlockIfExists(String individual) {

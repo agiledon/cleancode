@@ -15,9 +15,4 @@ public class People {
         }
         return result;
     }
-
-    //using guava
-
-    //using jdk8
-
 }

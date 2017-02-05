@@ -7,10 +7,10 @@ import zhangyi.cleancode.slap.infrastructure.DatabasePool;
 import java.sql.*;
 import java.util.List;
 
-public class OrderService {
+public class TrainingService {
     private DatabasePool dbPool;
 
-    public void placeOrder(List<Training> trainings, Customer customer) throws SQLException {
+    public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
         Statement s = null;

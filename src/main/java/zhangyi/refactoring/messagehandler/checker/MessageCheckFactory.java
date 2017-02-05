@@ -6,10 +6,11 @@ package zhangyi.refactoring.messagehandler.checker;/*                           
 **                                                                      **
 \*                                                                      */
 
+import zhangyi.refactoring.messagehandler.MessageReader;
 import zhangyi.refactoring.messagehandler.MessageType;
 
 public class MessageCheckFactory {
-    public MessageChecker checkerFor(MessageType messageType, String expectedMessage, String actualMessage) {
+    public MessageChecker checkerFor(MessageType messageType, MessageReader expectedMessage, String actualMessage) {
         switch (messageType) {
             case SO05:
                 return new SO05MessageChecker(expectedMessage, actualMessage);
@@ -20,6 +21,5 @@ public class MessageCheckFactory {
             default:
                 return new DefaultMessageChecker(expectedMessage, actualMessage);
         }
-
     }
 }

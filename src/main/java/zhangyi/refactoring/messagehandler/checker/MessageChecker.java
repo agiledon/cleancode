@@ -6,11 +6,13 @@ package zhangyi.refactoring.messagehandler.checker;/*                           
 **                                                                      **
 \*                                                                      */
 
+import zhangyi.refactoring.messagehandler.MessageReader;
+
 public abstract class MessageChecker {
-    protected final String expectedMessage;
+    protected final MessageReader expectedMessage;
     protected final String actualMessage;
 
-    public MessageChecker(String expectedMessage, String actualMessage) {
+    public MessageChecker(MessageReader expectedMessage, String actualMessage) {
         this.expectedMessage = expectedMessage;
         this.actualMessage = actualMessage;
     }

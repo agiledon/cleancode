@@ -6,6 +6,8 @@ package zhangyi.refactoring.messagehandler;/*                                   
 **                                                                      **
 \*                                                                      */
 
+import zhangyi.refactoring.messagehandler.checker.MessageCheckFactory;
+
 import java.util.Queue;
 
 public class AddUpdateProductSystemCustomerSteps extends AbstractCustomerExpectationSteps {

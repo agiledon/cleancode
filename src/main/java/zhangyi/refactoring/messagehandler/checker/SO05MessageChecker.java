@@ -1,4 +1,4 @@
-package zhangyi.refactoring.messagehandler;/*                                                                      *\
+package zhangyi.refactoring.messagehandler.checker;/*                                                                      *\
 **                                                                      **
 **      __  __ _________ _____          ©Mort BI                        **
 **     |  \/  / () | () |_   _|         (c) 2015                        **
@@ -6,11 +6,15 @@ package zhangyi.refactoring.messagehandler;/*                                   
 **                                                                      **
 \*                                                                      */
 
-public class MessageCheckFactory {
-    public MessageCheckFactory() {
+import zhangyi.refactoring.messagehandler.MessageReader;
+
+public class SO05MessageChecker extends MessageChecker {
+    public SO05MessageChecker(MessageReader messageReader, String messageText) {
+        super(messageReader, messageText);
     }
 
-    public MessageChecker checkerFor(MessageType messageType, MessageReader messageReader, String messageText) {
-        return new MessageChecker();
+    @Override
+    public void checkResponse() {
+
     }
 }

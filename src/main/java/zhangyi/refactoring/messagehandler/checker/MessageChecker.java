@@ -1,4 +1,4 @@
-package zhangyi.refactoring.messagehandler;/*                                                                      *\
+package zhangyi.refactoring.messagehandler.checker;/*                                                                      *\
 **                                                                      **
 **      __  __ _________ _____          ©Mort BI                        **
 **     |  \/  / () | () |_   _|         (c) 2015                        **
@@ -6,8 +6,11 @@ package zhangyi.refactoring.messagehandler;/*                                   
 **                                                                      **
 \*                                                                      */
 
-public enum MessageType {
-    SO05,
-    SO07,
-    SO08
+import zhangyi.refactoring.messagehandler.MessageReader;
+
+public abstract class MessageChecker {
+    public MessageChecker(MessageReader messageReader, String messageText) {
+    }
+
+    public abstract void checkResponse();
 }

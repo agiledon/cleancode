@@ -60,6 +60,7 @@ public class MailingListServer {
                 try {
                     Thread.sleep(interval * 1000);
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             } while (true);
         } catch (Exception e) {
@@ -93,8 +94,7 @@ public class MailingListServer {
             Session session,
             Folder folder,
             Message[] messages) throws
-            MessagingException, AddressException, IOException,
-            NoSuchProviderException {
+            MessagingException, IOException {
         FetchProfile fp = new FetchProfile();
         fp.add(FetchProfile.Item.ENVELOPE);
         fp.add(FetchProfile.Item.FLAGS);

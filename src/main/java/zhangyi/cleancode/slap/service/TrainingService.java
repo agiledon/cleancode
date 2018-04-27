@@ -26,7 +26,6 @@ public class TrainingService {
             addOrder(customer, trainings);
             c.commit();
         } catch (SQLException sqlx) {
-            s = c.createStatement();
             c.rollback();
             throw sqlx;
         } finally {

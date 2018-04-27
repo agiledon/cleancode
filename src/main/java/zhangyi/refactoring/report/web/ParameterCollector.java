@@ -4,7 +4,7 @@ import zhangyi.refactoring.report.engine.*;
 import zhangyi.refactoring.report.servlet.ServletHttpRequest;
 
 public class ParameterCollector {
-    private void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
+    public void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
         for (Parameter para : parameterGraph.getParmaeters()) {
             if (para instanceof SimpleParameter) {
                 SimpleParameter simplePara = (SimpleParameter) para;

@@ -10,7 +10,12 @@ public class Customer {
     public String getLastName(){
         return lastName;
     }
-    public Wallet getWallet(){
-        return myWallet;
+
+    public void pay(float payment) {
+        if (myWallet.getTotalMoney() > payment) {
+            myWallet.subtractMoney(payment);
+        } else {
+            //money not enough
+        }
     }
 }

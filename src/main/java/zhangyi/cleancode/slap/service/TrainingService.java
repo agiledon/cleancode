@@ -11,12 +11,14 @@ public class TrainingService {
     private final Command command = new InnerCommand(this);
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
+        usingTransaction(command);
+    }
+
+    private void usingTransaction(Command command) throws SQLException {
         transactionScope.setupTransaction();
         try {
             transactionScope.beginTransaction();
-
             command.execute();
-
             transactionScope.commitTransaction();
         } catch (SQLException sqlx) {
             transactionScope.rollbackTransaction();

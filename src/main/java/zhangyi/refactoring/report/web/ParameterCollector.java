@@ -7,18 +7,18 @@ public class ParameterCollector {
     public void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
         for (Parameter para : parameterGraph.getParmaeters()) {
             if (para instanceof SimpleParameter) {
-                fillSimpleParameter(request, (SimpleParameter) para);
+                fill(request, (SimpleParameter) para);
             } else {
                 if (para instanceof ItemParameter) {
-                    fillItemParameter(request, (ItemParameter) para);
+                    fill(request, (ItemParameter) para);
                 } else {
-                    fillTableParameter(request, (TableParameter) para);
+                    fill(request, (TableParameter) para);
                 }
             }
         }
     }
 
-    private void fillTableParameter(ServletHttpRequest request, TableParameter para) {
+    private void fill(ServletHttpRequest request, TableParameter para) {
         TableParameter tablePara = para;
         String[] rows =
                 request.getParameterValues(tablePara.getRowName());
@@ -39,7 +39,7 @@ public class ParameterCollector {
         }
     }
 
-    private void fillItemParameter(ServletHttpRequest request, ItemParameter para) {
+    private void fill(ServletHttpRequest request, ItemParameter para) {
         ItemParameter itemPara = para;
         for (Item item : itemPara.getItems()) {
             String[] values = request.getParameterValues(item.getName());
@@ -47,7 +47,7 @@ public class ParameterCollector {
         }
     }
 
-    private void fillSimpleParameter(ServletHttpRequest request, SimpleParameter para) {
+    private void fill(ServletHttpRequest request, SimpleParameter para) {
         SimpleParameter simplePara = para;
         String[] values = request.getParameterValues(simplePara.getName());
         simplePara.setValue(values);

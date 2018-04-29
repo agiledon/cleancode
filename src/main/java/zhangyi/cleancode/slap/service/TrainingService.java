@@ -45,7 +45,7 @@ public class TrainingService {
             this.trainingService = trainingService;
         }
 
-        private void execute() {
+        public void execute() {
             for (Training training : this.trainings) {
                 trainingService.addTrainingItem(this.customer, training);
             }

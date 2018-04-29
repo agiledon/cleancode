@@ -16,33 +16,55 @@ public class TrainingService {
     private boolean transactionState;
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
+        setupTransaction();
+        try {
+            beginTransaction();
+
+            for (Training training : trainings) {
+                addTrainingItem(customer, training);
+            }
+            addOrder(customer, trainings);
+
+            commitTransaction();
+        } catch (SQLException sqlx) {
+            rollbackTransaction();
+            throw sqlx;
+        } finally {
+            teardownTransaction();
+        }
+    }
+
+    private void teardownTransaction() {
+        try {
+            connection.setAutoCommit(transactionState);
+            dbPool.release(connection);
+            if (statement != null) statement.close();
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
+        } catch (SQLException ignored) {
+        }
+    }
+
+    private void rollbackTransaction() throws SQLException {
+        connection.rollback();
+    }
+
+    private void commitTransaction() throws SQLException {
+        connection.commit();
+    }
+
+    private void beginTransaction() throws SQLException {
+        statement = connection.createStatement();
+        transactionState = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+    }
+
+    private void setupTransaction() {
         connection = null;
         preparedStatement = null;
         statement = null;
         resultSet = null;
         transactionState = false;
-        try {
-            statement = connection.createStatement();
-            transactionState = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            for (Training training : trainings) {
-                addTrainingItem(customer, training);
-            }
-            addOrder(customer, trainings);
-            connection.commit();
-        } catch (SQLException sqlx) {
-            connection.rollback();
-            throw sqlx;
-        } finally {
-            try {
-                connection.setAutoCommit(transactionState);
-                dbPool.release(connection);
-                if (statement != null) statement.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException ignored) {
-            }
-        }
     }
 
     private void addOrder(Customer customer, List<Training> trainings) {

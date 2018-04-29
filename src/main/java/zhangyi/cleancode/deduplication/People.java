@@ -2,14 +2,15 @@ package zhangyi.cleancode.deduplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class People {
     private List<Person> persons = new ArrayList<Person>();
 
-    public List<Person> find(Matcher matcher) {
+    public List<Person> find(Predicate<Person> predicate) {
         List<Person> result = new ArrayList<Person>();
         for (Person person : persons) {
-            if (matcher.match(person)) {
+            if (predicate.test(person)) {
                 result.add(person);
             }
         }
@@ -22,9 +23,5 @@ public class People {
 
     public List<Person> findByAge(int age) {
         return find(p -> p.getAge() == age);
-    }
-
-    private interface Matcher {
-        boolean match(Person person);
     }
 }

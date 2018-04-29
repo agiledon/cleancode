@@ -4,27 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartDB {
-    private static final String DRIVER_CLASS = "";
-    private static final String DB_URL = "";
-    private static final String USER = "";
-    private static final String PASSWORD = "";
+public class PartDB extends JdbcTemplate {
     private List<Part> partList = new ArrayList<Part>();
 
-    public void populate() throws Exception {
-        Connection connection = null;
-        try {
-            connection = getConnection();
-            ResultSet rs = getResultSet(connection);
-            while (rs.next()) {
-                populateParts(rs);
-            }
-        } finally {
-            connection.close();
-        }
-    }
-
-    private void populateParts(ResultSet rs) throws SQLException {
+    @Override
+    protected void populateParts(ResultSet rs) throws SQLException {
         Part p = new Part();
         p.setName(rs.getString("name"));
         p.setBrand(rs.getString("brand"));
@@ -32,17 +16,9 @@ public class PartDB {
         partList.add(p);
     }
 
-    private ResultSet getResultSet(Connection connection) throws SQLException {
-        Statement stmt = connection.createStatement();
-        return stmt.executeQuery(getSql());
-    }
-
-    private String getSql() {
+    @Override
+    protected String getSql() {
         return "select * from part";
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName(DRIVER_CLASS);
-        return DriverManager.getConnection(DB_URL, USER, PASSWORD);
-    }
 }

@@ -8,13 +8,14 @@ import java.util.List;
 
 public class TrainingService {
     private final TransactionScope transactionScope = new TransactionScope();
+    private final Command command = new Command(this);
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
         transactionScope.setupTransaction();
         try {
             transactionScope.beginTransaction();
 
-            execute(trainings, customer);
+            command.execute(trainings, customer);
 
             transactionScope.commitTransaction();
         } catch (SQLException sqlx) {
@@ -25,13 +26,6 @@ public class TrainingService {
         }
     }
 
-    private void execute(List<Training> trainings, Customer customer) {
-        for (Training training : trainings) {
-            addTrainingItem(customer, training);
-        }
-        addOrder(customer, trainings);
-    }
-
     private void addOrder(Customer customer, List<Training> trainings) {
 
 
@@ -40,5 +34,20 @@ public class TrainingService {
     private void addTrainingItem(Customer customer, Training training) {
 
 
+    }
+
+    public static class Command {
+        private final TrainingService trainingService;
+
+        public Command(TrainingService trainingService) {
+            this.trainingService = trainingService;
+        }
+
+        private void execute(List<Training> trainings, Customer customer) {
+            for (Training training : trainings) {
+                trainingService.addTrainingItem(customer, training);
+            }
+            trainingService.addOrder(customer, trainings);
+        }
     }
 }

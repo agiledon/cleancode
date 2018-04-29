@@ -28,26 +28,6 @@ public class TrainingService {
         }
     }
 
-    private void teardownTransaction() {
-        transactionScope.teardownTransaction();
-    }
-
-    private void rollbackTransaction() throws SQLException {
-        transactionScope.rollbackTransaction();
-    }
-
-    private void commitTransaction() throws SQLException {
-        transactionScope.commitTransaction();
-    }
-
-    private void beginTransaction() throws SQLException {
-        transactionScope.beginTransaction();
-    }
-
-    private void setupTransaction() {
-        transactionScope.setupTransaction();
-    }
-
     private void addOrder(Customer customer, List<Training> trainings) {
 
 

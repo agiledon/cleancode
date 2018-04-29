@@ -4,7 +4,6 @@ public class Movie {
     public static final int REGULAR = 0;
     public static final int NEW_RELEASE = 1;
     public static final int CHILDREN = 2;
-    private MoviePrice price;
 
     private String title;
     private int priceCode;
@@ -28,15 +27,16 @@ public class Movie {
 
     public double amountFor(int daysRented) {
         double thisAmount = 0;
+        MoviePrice price;
         switch (this.getPriceCode()) {
             case REGULAR:
-                this.price = new RegularPrice();
+                price = new RegularPrice();
                 break;
             case NEW_RELEASE:
-                this.price = new NewReleasePrice();
+                price = new NewReleasePrice();
                 break;
-            case CHILDREN:
-                this.price = new ChildrenPrice();
+            default:
+                price = new ChildrenPrice();
                 break;
         }
         return price.amountFor(daysRented, thisAmount);

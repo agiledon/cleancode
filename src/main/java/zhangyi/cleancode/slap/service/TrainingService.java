@@ -2,69 +2,50 @@ package zhangyi.cleancode.slap.service;
 
 import zhangyi.cleancode.slap.entity.Customer;
 import zhangyi.cleancode.slap.entity.Training;
-import zhangyi.cleancode.slap.infrastructure.DatabasePool;
 
 import java.sql.*;
 import java.util.List;
 
 public class TrainingService {
-    private DatabasePool dbPool;
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private Statement statement;
-    private ResultSet resultSet;
-    private boolean transactionState;
+    private final TransactionScope transactionScope = new TransactionScope();
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        setupTransaction();
+        transactionScope.setupTransaction();
         try {
-            beginTransaction();
+            transactionScope.beginTransaction();
 
             for (Training training : trainings) {
                 addTrainingItem(customer, training);
             }
             addOrder(customer, trainings);
 
-            commitTransaction();
+            transactionScope.commitTransaction();
         } catch (SQLException sqlx) {
-            rollbackTransaction();
+            transactionScope.rollbackTransaction();
             throw sqlx;
         } finally {
-            teardownTransaction();
+            transactionScope.teardownTransaction();
         }
     }
 
     private void teardownTransaction() {
-        try {
-            connection.setAutoCommit(transactionState);
-            dbPool.release(connection);
-            if (statement != null) statement.close();
-            if (preparedStatement != null) preparedStatement.close();
-            if (resultSet != null) resultSet.close();
-        } catch (SQLException ignored) {
-        }
+        transactionScope.teardownTransaction();
     }
 
     private void rollbackTransaction() throws SQLException {
-        connection.rollback();
+        transactionScope.rollbackTransaction();
     }
 
     private void commitTransaction() throws SQLException {
-        connection.commit();
+        transactionScope.commitTransaction();
     }
 
     private void beginTransaction() throws SQLException {
-        statement = connection.createStatement();
-        transactionState = connection.getAutoCommit();
-        connection.setAutoCommit(false);
+        transactionScope.beginTransaction();
     }
 
     private void setupTransaction() {
-        connection = null;
-        preparedStatement = null;
-        statement = null;
-        resultSet = null;
-        transactionState = false;
+        transactionScope.setupTransaction();
     }
 
     private void addOrder(Customer customer, List<Training> trainings) {

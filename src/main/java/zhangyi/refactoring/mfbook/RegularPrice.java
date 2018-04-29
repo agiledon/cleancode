@@ -1,9 +1,10 @@
 package zhangyi.refactoring.mfbook;
 
-public class RegularPrice {
+public class RegularPrice extends MoviePrice {
     public RegularPrice() {
     }
 
+    @Override
     double amountFor(int daysRented, double thisAmount) {
         thisAmount += 2;
         if (daysRented > 2)

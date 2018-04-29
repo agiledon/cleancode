@@ -6,7 +6,7 @@ public class Movie {
     public static final int CHILDREN = 2;
     private final ChildrenPrice childrenPrice = new ChildrenPrice();
     private final NewReleasePrice newReleasePrice = new NewReleasePrice();
-    private final RegularPrice regularPrice = new RegularPrice();
+    private final MoviePrice moviePrice = new RegularPrice();
 
     private String title;
     private int priceCode;
@@ -32,7 +32,7 @@ public class Movie {
         double thisAmount = 0;
         switch (this.getPriceCode()) {
             case REGULAR:
-                thisAmount = regularPrice.amountFor(daysRented, thisAmount);
+                thisAmount = moviePrice.amountFor(daysRented, thisAmount);
                 break;
             case NEW_RELEASE:
                 thisAmount = newReleasePrice.amountFor(daysRented, thisAmount);

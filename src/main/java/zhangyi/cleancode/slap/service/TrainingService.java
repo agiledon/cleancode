@@ -14,10 +14,7 @@ public class TrainingService {
         try {
             transactionScope.beginTransaction();
 
-            for (Training training : trainings) {
-                addTrainingItem(customer, training);
-            }
-            addOrder(customer, trainings);
+            execute(trainings, customer);
 
             transactionScope.commitTransaction();
         } catch (SQLException sqlx) {
@@ -26,6 +23,13 @@ public class TrainingService {
         } finally {
             transactionScope.teardownTransaction();
         }
+    }
+
+    private void execute(List<Training> trainings, Customer customer) {
+        for (Training training : trainings) {
+            addTrainingItem(customer, training);
+        }
+        addOrder(customer, trainings);
     }
 
     private void addOrder(Customer customer, List<Training> trainings) {

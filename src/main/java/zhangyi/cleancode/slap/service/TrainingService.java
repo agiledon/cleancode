@@ -9,32 +9,37 @@ import java.util.List;
 
 public class TrainingService {
     private DatabasePool dbPool;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private Statement statement;
+    private ResultSet resultSet;
+    private boolean transactionState;
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-        Statement s = null;
-        ResultSet rs = null;
-        boolean transactionState = false;
+        connection = null;
+        preparedStatement = null;
+        statement = null;
+        resultSet = null;
+        transactionState = false;
         try {
-            s = c.createStatement();
-            transactionState = c.getAutoCommit();
-            c.setAutoCommit(false);
+            statement = connection.createStatement();
+            transactionState = connection.getAutoCommit();
+            connection.setAutoCommit(false);
             for (Training training : trainings) {
                 addTrainingItem(customer, training);
             }
             addOrder(customer, trainings);
-            c.commit();
+            connection.commit();
         } catch (SQLException sqlx) {
-            c.rollback();
+            connection.rollback();
             throw sqlx;
         } finally {
             try {
-                c.setAutoCommit(transactionState);
-                dbPool.release(c);
-                if (s != null) s.close();
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
+                connection.setAutoCommit(transactionState);
+                dbPool.release(connection);
+                if (statement != null) statement.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (resultSet != null) resultSet.close();
             } catch (SQLException ignored) {
             }
         }

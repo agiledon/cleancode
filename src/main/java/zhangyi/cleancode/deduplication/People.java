@@ -15,4 +15,14 @@ public class People {
         }
         return result;
     }
+
+    public List<Person> findByAge(int age) {
+        List<Person> result = new ArrayList<Person>();
+        for (Person person : persons) {
+            if (person.getAge() == age) {
+                result.add(person);
+            }
+        }
+        return result;
+    }
 }

@@ -32,18 +32,13 @@ public class Movie {
     }
 
     private MoviePrice createPrice() {
-        MoviePrice price;
         switch (this.getPriceCode()) {
             case REGULAR:
-                price = new RegularPrice();
-                break;
+                return new RegularPrice();
             case NEW_RELEASE:
-                price = new NewReleasePrice();
-                break;
+                return new NewReleasePrice();
             default:
-                price = new ChildrenPrice();
-                break;
+                return new ChildrenPrice();
         }
-        return price;
     }
 }

@@ -15,21 +15,21 @@ public class TransactionScope {
     public TransactionScope() {
     }
 
-    public void usingTransaction(Command command) throws SQLException {
-        setupTransaction();
+    public void using(Command command) throws SQLException {
+        setup();
         try {
-            beginTransaction();
+            begin();
             command.execute();
-            commitTransaction();
+            commit();
         } catch (SQLException sqlx) {
-            rollbackTransaction();
+            rollback();
             throw sqlx;
         } finally {
-            teardownTransaction();
+            teardown();
         }
     }
 
-    private void setupTransaction() {
+    private void setup() {
         connection = null;
         preparedStatement = null;
         statement = null;
@@ -37,7 +37,7 @@ public class TransactionScope {
         transactionState = false;
     }
 
-    private void teardownTransaction() {
+    private void teardown() {
         try {
             connection.setAutoCommit(transactionState);
             dbPool.release(connection);
@@ -48,17 +48,17 @@ public class TransactionScope {
         }
     }
 
-    private void beginTransaction() throws SQLException {
+    private void begin() throws SQLException {
         statement = connection.createStatement();
         transactionState = connection.getAutoCommit();
         connection.setAutoCommit(false);
     }
 
-    private void commitTransaction() throws SQLException {
+    private void commit() throws SQLException {
         connection.commit();
     }
 
-    private void rollbackTransaction() throws SQLException {
+    private void rollback() throws SQLException {
         connection.rollback();
     }
 }

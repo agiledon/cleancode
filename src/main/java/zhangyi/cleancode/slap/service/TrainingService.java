@@ -10,7 +10,7 @@ public class TrainingService {
     private final TransactionScope transactionScope = new TransactionScope();
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        transactionScope.usingTransaction(() -> {
+        transactionScope.using(() -> {
             for (Training training : trainings) {
                 addTrainingItem(customer, training);
             }

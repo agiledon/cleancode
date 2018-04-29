@@ -30,9 +30,10 @@ class Rental {
     }
 
     public double amountFor() {
-        //determine amounts for each line
-        int daysRented = getDaysRented();
-        
+        return amountFor(getDaysRented());
+    }
+
+    private double amountFor(int daysRented) {
         double thisAmount = 0;
         switch (getMovie().getPriceCode()) {
             case Movie.REGULAR:

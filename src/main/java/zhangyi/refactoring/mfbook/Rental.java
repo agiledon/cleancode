@@ -30,21 +30,23 @@ class Rental {
     }
 
     public double amountFor() {
-        double thisAmount = 0;
         //determine amounts for each line
+        int daysRented = getDaysRented();
+        
+        double thisAmount = 0;
         switch (getMovie().getPriceCode()) {
             case Movie.REGULAR:
                 thisAmount += 2;
-                if (getDaysRented() > 2)
-                    thisAmount += (getDaysRented() - 2) * 1.5;
+                if (daysRented > 2)
+                    thisAmount += (daysRented - 2) * 1.5;
                 break;
             case Movie.NEW_RELEASE:
-                thisAmount += getDaysRented() * 3;
+                thisAmount += daysRented * 3;
                 break;
             case Movie.CHILDREN:
                 thisAmount += 1.5;
-                if (getDaysRented() > 3)
-                    thisAmount += (getDaysRented() - 3) * 1.5;
+                if (daysRented > 3)
+                    thisAmount += (daysRented - 3) * 1.5;
                 break;
         }
         return thisAmount;

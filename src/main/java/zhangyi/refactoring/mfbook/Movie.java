@@ -32,13 +32,13 @@ public class Movie {
         double thisAmount = 0;
         switch (this.getPriceCode()) {
             case REGULAR:
-                thisAmount = regularPrice.amountForRegular(daysRented, thisAmount);
+                thisAmount = regularPrice.amountFor(daysRented, thisAmount);
                 break;
             case NEW_RELEASE:
-                thisAmount = newReleasePrice.amountForNewRelease(daysRented, thisAmount);
+                thisAmount = newReleasePrice.amountFor(daysRented, thisAmount);
                 break;
             case CHILDREN:
-                thisAmount = childrenPrice.amountForChildren(daysRented, thisAmount);
+                thisAmount = childrenPrice.amountFor(daysRented, thisAmount);
                 break;
         }
         return thisAmount;

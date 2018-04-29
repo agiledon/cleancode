@@ -6,23 +6,25 @@ import java.util.List;
 public class People {
     private List<Person> persons = new ArrayList<Person>();
 
-    public List<Person> findByName(String name) {
+    public List<Person> find(Matcher matcher) {
         List<Person> result = new ArrayList<Person>();
         for (Person person : persons) {
-            if (person.getName().equals(name)) {
+            if (matcher.match(person)) {
                 result.add(person);
             }
         }
         return result;
     }
 
+    public List<Person> findByName(String name) {
+        return find(p -> p.getName() == name);
+    }
+
     public List<Person> findByAge(int age) {
-        List<Person> result = new ArrayList<Person>();
-        for (Person person : persons) {
-            if (person.getAge() == age) {
-                result.add(person);
-            }
-        }
-        return result;
+        return find(p -> p.getAge() == age);
+    }
+
+    private interface Matcher {
+        boolean match(Person person);
     }
 }

@@ -15,7 +15,7 @@ public class TrainingService {
         try {
             transactionScope.beginTransaction();
 
-            command.execute(trainings, customer);
+            command.execute();
 
             transactionScope.commitTransaction();
         } catch (SQLException sqlx) {
@@ -38,16 +38,18 @@ public class TrainingService {
 
     public static class Command {
         private final TrainingService trainingService;
+        private List<Training> trainings;
+        private Customer customer;
 
         public Command(TrainingService trainingService) {
             this.trainingService = trainingService;
         }
 
-        private void execute(List<Training> trainings, Customer customer) {
-            for (Training training : trainings) {
-                trainingService.addTrainingItem(customer, training);
+        private void execute() {
+            for (Training training : this.trainings) {
+                trainingService.addTrainingItem(this.customer, training);
             }
-            trainingService.addOrder(customer, trainings);
+            trainingService.addOrder(this.customer, this.trainings);
         }
     }
 }

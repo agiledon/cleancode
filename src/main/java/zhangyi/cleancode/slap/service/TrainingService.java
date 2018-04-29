@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TrainingService {
     private final TransactionScope transactionScope = new TransactionScope();
-    private final Command command = new Command(this);
+    private final Command command = new InnerCommand(this);
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
         transactionScope.setupTransaction();
@@ -36,15 +36,16 @@ public class TrainingService {
 
     }
 
-    public static class Command {
+    public static class InnerCommand implements Command {
         private final TrainingService trainingService;
         private List<Training> trainings;
         private Customer customer;
 
-        public Command(TrainingService trainingService) {
+        public InnerCommand(TrainingService trainingService) {
             this.trainingService = trainingService;
         }
 
+        @Override
         public void execute() {
             for (Training training : this.trainings) {
                 trainingService.addTrainingItem(this.customer, training);

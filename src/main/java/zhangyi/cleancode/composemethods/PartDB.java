@@ -9,7 +9,6 @@ public class PartDB {
     private static final String DB_URL = "";
     private static final String USER = "";
     private static final String PASSWORD = "";
-    private static final String SQL_SELECT_PARTS = "select * from part";
     private List<Part> partList = new ArrayList<Part>();
 
     public void populate() throws Exception {
@@ -35,7 +34,11 @@ public class PartDB {
 
     private ResultSet getResultSet(Connection connection) throws SQLException {
         Statement stmt = connection.createStatement();
-        return stmt.executeQuery(SQL_SELECT_PARTS);
+        return stmt.executeQuery(getSql());
+    }
+
+    private String getSql() {
+        return "select * from part";
     }
 
     private Connection getConnection() throws ClassNotFoundException, SQLException {

@@ -7,12 +7,12 @@ public class ParameterCollector {
     public void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
         for (Parameter para : parameterGraph.getParmaeters()) {
             if (para instanceof SimpleParameter) {
-                ((SimpleParameter) para).fill(request);
+                para.fill(request);
             } else {
                 if (para instanceof ItemParameter) {
-                    ((ItemParameter) para).fill(request);
+                    para.fill(request);
                 } else {
-                    ((TableParameter) para).fill(request);
+                    para.fill(request);
                 }
             }
         }

@@ -27,6 +27,11 @@ public class Movie {
 
     public double amountFor(int daysRented) {
         double thisAmount = 0;
+        MoviePrice price = createPrice();
+        return price.amountFor(daysRented, thisAmount);
+    }
+
+    private MoviePrice createPrice() {
         MoviePrice price;
         switch (this.getPriceCode()) {
             case REGULAR:
@@ -39,6 +44,6 @@ public class Movie {
                 price = new ChildrenPrice();
                 break;
         }
-        return price.amountFor(daysRented, thisAmount);
+        return price;
     }
 }

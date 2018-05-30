@@ -8,7 +8,7 @@ public class ParameterCollector {
         for (Parameter para : parameterGraph.getParmaeters()) {
             if (para instanceof SimpleParameter) {
                 SimpleParameter simplePara = (SimpleParameter) para;
-                String[] values = request.getParameterValues(para.getName());
+                String[] values = request.getParameterValues(simplePara.getName());
                 simplePara.setValue(values);
             } else {
                 if (para instanceof ItemParameter) {

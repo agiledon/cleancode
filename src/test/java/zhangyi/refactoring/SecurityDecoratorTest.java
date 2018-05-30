@@ -1,6 +1,10 @@
 package zhangyi.refactoring;
 
 import org.junit.Test;
+import zhangyi.design.decorator.Employee;
+import zhangyi.design.decorator.LoggingDecorator;
+import zhangyi.design.decorator.SecurityDecorator;
+import zhangyi.design.decorator.User;
 
 
 public class SecurityDecoratorTest {

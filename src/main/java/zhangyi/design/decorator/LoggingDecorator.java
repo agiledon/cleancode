@@ -1,4 +1,4 @@
-package zhangyi.refactoring;
+package zhangyi.design.decorator;
 
 import java.time.LocalDate;
 

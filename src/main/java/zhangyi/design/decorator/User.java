@@ -1,4 +1,4 @@
-package zhangyi.refactoring;
+package zhangyi.design.decorator;
 
 public class User {
     public void login() {

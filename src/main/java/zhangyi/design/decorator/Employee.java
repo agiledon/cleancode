@@ -1,4 +1,4 @@
-package zhangyi.refactoring;
+package zhangyi.design.decorator;
 
 public class Employee extends User {
     @Override

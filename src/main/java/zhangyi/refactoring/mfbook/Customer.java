@@ -19,21 +19,17 @@ class Customer {
         return name;
     }
 
-    public String statement() {
-        String result = "Rental Record for " + getName() + "\n";
+    public static String statement(Customer customer) {
+        String result = "Rental Record for " + customer.getName() + "\n";
 
-        int frequentRenterPoints = totalPoints();
-
-        for (Rental rental : rentals) {
+        for (Rental rental : customer.rentals) {
             //show figures
             result += "\t" + rental.getMovie().getTitle() + "\t" + String.valueOf(rental.amountFor()) + "\n";
         }
 
-        double totalAmount = totalAmounts();
-
         //add footer lines
-        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) +
+        result += "Amount owed is " + String.valueOf(customer.totalAmounts()) + "\n";
+        result += "You earned " + String.valueOf(customer.totalPoints()) +
                 " frequent renter points";
         return result;
     }

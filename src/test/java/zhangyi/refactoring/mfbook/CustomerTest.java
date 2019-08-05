@@ -11,18 +11,19 @@ public class CustomerTest {
     public static final String NEW_RELEASE_MOVIE_NAME = "Iron Man";
     public static final String CUSOMTER_NAME = "zhangyi";
     public static final String CHILDREN_MOVIE = "Kongfu Panda";
-    private final Statement statement = new Statement();
+    private Statement statement;
     private Movie regularMovie;
     private Customer customer;
     private Movie newReleaseMovie;
     private Movie childrenMovie;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         regularMovie = new Movie(REGULAR_MOVIE_NAME, 0);
         customer = new Customer(CUSOMTER_NAME);
         newReleaseMovie = new Movie(NEW_RELEASE_MOVIE_NAME, 1);
         childrenMovie = new Movie(CHILDREN_MOVIE, 2);
+        statement = new PlainTextStatement();
     }
 
     @Test
@@ -32,7 +33,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 2.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 3.5;
         int expectedFrequentRenterPoints = 1;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 3.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -62,11 +63,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 9.0;
         int expectedFrequentRenterPoints = 2;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
-    }
-
-    private String getStatement() {
-        return statement.statement(customer);
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -76,7 +73,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 1.5;
         int expectedFrequentRenterPoints = 1;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -86,7 +83,7 @@ public class CustomerTest {
 
         double expectedTotalAmount = 3.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(getStatement(), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(statement.statement(customer), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -98,7 +95,7 @@ public class CustomerTest {
         customer.addRental(rentalForNewReleaseMovie);
         customer.addRental(rentalForChildrenMovie);
 
-        assertThat(getStatement(), is("Rental Record for zhangyi\n\t" +
+        assertThat(statement.statement(customer), is("Rental Record for zhangyi\n\t" +
                 "Brave Heart\t3.5\n" +
                 "\tIron Man\t9.0\n" +
                 "\tKongfu Panda\t1.5\n" +

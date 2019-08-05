@@ -11,6 +11,7 @@ public class CustomerTest {
     public static final String NEW_RELEASE_MOVIE_NAME = "Iron Man";
     public static final String CUSOMTER_NAME = "zhangyi";
     public static final String CHILDREN_MOVIE = "Kongfu Panda";
+    private final Statement statement = new Statement();
     private Movie regularMovie;
     private Customer customer;
     private Movie newReleaseMovie;
@@ -65,7 +66,7 @@ public class CustomerTest {
     }
 
     private String getStatement() {
-        return Statement.statement(customer);
+        return statement.statement(customer);
     }
 
     @Test

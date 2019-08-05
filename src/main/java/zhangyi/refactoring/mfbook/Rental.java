@@ -9,28 +9,16 @@ class Rental {
         this.daysRented = daysRented;
     }
 
-    public int getDaysRented() {
-        return daysRented;
-    }
-
     public Movie getMovie() {
         return movie;
     }
 
     public int pointsFor() {
-        int frequentRenterPoints = 0;
-        // add frequent renter points
-        frequentRenterPoints++;
-        // add bonus for a two day new release rental
-        if ((getMovie().getPriceCode() == Movie.NEW_RELEASE)
-                &&
-                getDaysRented() > 1)
-            frequentRenterPoints++;
-        return frequentRenterPoints;
+        return movie.pointsFor(this.daysRented);
     }
 
     public double amountFor() {
-        return movie.amountFor(getDaysRented());
+        return movie.amountFor(daysRented);
     }
 
 }

@@ -6,19 +6,11 @@ public class Movie {
     public static final int CHILDREN = 2;
 
     private String title;
-    private int priceCode;
+    private MoviePrice price;
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        this.priceCode = priceCode;
-    }
-
-    public int getPriceCode() {
-        return priceCode;
-    }
-
-    public void setPriceCode(int arg) {
-        priceCode = arg;
+        this.price = createPrice(priceCode);
     }
 
     public String getTitle() {
@@ -26,13 +18,15 @@ public class Movie {
     }
 
     public double amountFor(int daysRented) {
-        double thisAmount = 0;
-        MoviePrice price = createPrice();
-        return price.amountFor(daysRented, thisAmount);
+        return price.amountFor(daysRented);
     }
 
-    private MoviePrice createPrice() {
-        switch (this.getPriceCode()) {
+    public int pointsFor(int daysRented) {
+        return price.pointsFor(daysRented);
+    }
+
+    private MoviePrice createPrice(int priceCode) {
+        switch (priceCode) {
             case REGULAR:
                 return new RegularPrice();
             case NEW_RELEASE:

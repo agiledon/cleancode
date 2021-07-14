@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+   <alarmNew systemDN="PLMN-PLMN/TP5000-1">
+   
+      <eventTime>2011-04-18T13:18:11.324+08:00</eventTime>
+      <alarmId>2147483647</alarmId>
+      <specificProblem>2147483647</specificProblem>
+      <alarmText>test</alarmText>
+      <perceivedSeverity>major</perceivedSeverity>
+      <eventType>communication</eventType>
+      
+      <notificationId>88888</notificationId>
+      <probableCause>message</probableCause>
+      <additionalText1>test</additionalText1>
+      <additionalText5>test</additionalText5>
+      <ackStatus>acked</ackStatus>
+      <ackUser>maomao</ackUser>
+      
+   </alarmNew>
+   
+</notification>

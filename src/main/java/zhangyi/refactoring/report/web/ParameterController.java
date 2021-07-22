@@ -1,11 +1,12 @@
 package zhangyi.refactoring.report.web;
 
 import zhangyi.refactoring.report.engine.*;
-import zhangyi.refactoring.report.servlet.ServletHttpRequest;
 
-public class ParameterCollector {
-    public void fillParameters(ServletHttpRequest request, ParameterGraph parameterGraph) {
-        for (Parameter para : parameterGraph.getParmaeters()) {
+import javax.servlet.http.HttpServletRequest;
+
+public class ParameterController {
+    public void fillParameters(HttpServletRequest request, ParameterGraph parameterGraph) {
+        for (Parameter para : parameterGraph.getParameters()) {
             if (para instanceof SimpleParameter) {
                 SimpleParameter simplePara = (SimpleParameter) para;
                 String[] values = request.getParameterValues(simplePara.getName());

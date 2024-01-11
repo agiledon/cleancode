@@ -34,7 +34,7 @@ public class RosterTest {
         List<Employee> employees = roster.fetchRoster(fileName);
 
         //then
-        verify(mockReader, times(1)).read(fileName);
+        verify(mockReader).read(fileName);
         assertThat(employees).hasSize(2);
         assertThat(employees.get(0).getName()).isEqualTo("zhangyi");
     }

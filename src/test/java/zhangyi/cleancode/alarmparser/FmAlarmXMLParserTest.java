@@ -15,7 +15,7 @@ public class FmAlarmXMLParserTest {
     private static final String FileName = "/an_mainHost_10.102.243.39_XXX.xml";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fmAlarmXMLParser = new FmAlarmXMLParser();
     }
 
@@ -32,7 +32,7 @@ public class FmAlarmXMLParserTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         fmAlarmXMLParser = null;
     }
 

@@ -1,10 +1,24 @@
 package zhangyi.refactoring.extractmethod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Receipt {
     private List<Double> discounts;
     private List<Double> itemTotals;
+
+    public Receipt() {
+        discounts = new ArrayList<>();
+        itemTotals = new ArrayList<>();
+    }
+
+    public void addDiscount(double discount) {
+        discounts.add(discount);
+    }
+
+    public void addItemTotal(double itemTotal) {
+        itemTotals.add(itemTotal);
+    }
 
     public double calculateGrandTotal() {
         double subTotal = 0;

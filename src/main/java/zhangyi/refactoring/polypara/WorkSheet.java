@@ -8,15 +8,15 @@ public class WorkSheet{
         }
     }
 
-    private Header createHeader() {
-        return new Header();
-    }
-
     public void fillBody() {
         CellGroup cellGroup = createCellGroup();
         for (Cell cell:cellGroup.getCells()) {
             fillCell(cell.getText());
         }
+    }
+
+    private Header createHeader() {
+        return new Header();
     }
 
     private CellGroup createCellGroup() {

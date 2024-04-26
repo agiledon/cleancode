@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,7 +24,7 @@ import org.xml.sax.SAXException;
 public class FmAlarmXMLParser
         implements FmAlarmXMLFeatures {
 
-    private static Logger log = Logger.getLogger(FmAlarmXMLParser.class);
+    private static Logger log = LogManager.getLogger(FmAlarmXMLParser.class);
 
     public List<FmAlarm> parse(String filename) throws XMLParserException {
         List<FmAlarm> alarmList = null;

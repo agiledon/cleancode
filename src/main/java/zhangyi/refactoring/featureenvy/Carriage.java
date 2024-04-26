@@ -6,6 +6,6 @@ public class Carriage {
     }
 
     public void methodWithNoUsage() {
-        
+
     }
 }

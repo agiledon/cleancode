@@ -21,6 +21,9 @@ public class Receipt {
     }
 
     public double calculateGrandTotal() {
+        if (itemTotals.isEmpty()) {
+            return 0d;
+        }
         double subTotal = calculateTotal();
         subTotal = subtractDiscounts(subTotal);
         subTotal = addTax(subTotal);

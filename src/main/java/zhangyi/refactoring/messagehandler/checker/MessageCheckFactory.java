@@ -1,10 +1,4 @@
-package zhangyi.refactoring.messagehandler.checker;/*                                                                      *\
-**                                                                      **
-**      __  __ _________ _____          ©Mort BI                        **
-**     |  \/  / () | () |_   _|         (c) 2015                        **
-**     |_|\/|_\____|_|\_\ |_|           http://www.bigeyedata.com       **
-**                                                                      **
-\*                                                                      */
+package zhangyi.refactoring.messagehandler.checker;
 
 import zhangyi.refactoring.messagehandler.MessageReader;
 import zhangyi.refactoring.messagehandler.MessageType;

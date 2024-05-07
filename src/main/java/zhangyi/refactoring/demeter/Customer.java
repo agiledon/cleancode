@@ -1,12 +1,13 @@
 package zhangyi.refactoring.demeter;
 
-public class Customer {
+public class Customer implements Payable {
     private String customerId;
 
     private String firstName;
     private String lastName;
     private Wallet myWallet;
 
+    @Override
     public void pay(float payment) {
         if (myWallet.getTotalMoney() > payment) {
             myWallet.subtractMoney(payment);

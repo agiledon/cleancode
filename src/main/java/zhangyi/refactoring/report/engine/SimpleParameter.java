@@ -1,8 +1,16 @@
 package zhangyi.refactoring.report.engine;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class SimpleParameter implements Parameter{
 
     private Object[] value;
+
+    public void fillSimpleParameter(HttpServletRequest request) {
+        SimpleParameter simplePara = this;
+        String[] values = request.getParameterValues(simplePara.getName());
+        simplePara.setValue(values);
+    }
 
     @Override
     public String getName() {

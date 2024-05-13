@@ -4,7 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ItemParameter implements Parameter {
-    public void fillItemParameter(HttpServletRequest request) {
+    @Override
+    public void fill(HttpServletRequest request) {
         ItemParameter itemPara = this;
         for (Item item : itemPara.getItems()) {
             String[] values = request.getParameterValues(item.getName());

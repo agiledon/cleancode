@@ -7,7 +7,8 @@ public class TableParameter implements Parameter {
     private String columnName;
     private String dataCellName;
 
-    public void fillTableParameter(HttpServletRequest request) {
+    @Override
+    public void fill(HttpServletRequest request) {
         TableParameter tablePara = this;
         String[] rows =
                 request.getParameterValues(tablePara.getRowName());

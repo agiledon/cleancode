@@ -8,12 +8,12 @@ public class ParameterController {
     public void fillParameters(HttpServletRequest request, ParameterGraph parameterGraph) {
         for (Parameter para : parameterGraph.getParameters()) {
             if (para instanceof SimpleParameter) {
-                ((SimpleParameter) para).fillSimpleParameter(request);
+                para.fill(request);
             } else {
                 if (para instanceof ItemParameter) {
-                    ((ItemParameter) para).fillItemParameter(request);
+                    para.fill(request);
                 } else {
-                    ((TableParameter) para).fillTableParameter(request);
+                    para.fill(request);
                 }
             }
         }

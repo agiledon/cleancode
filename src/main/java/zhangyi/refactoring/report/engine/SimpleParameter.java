@@ -6,7 +6,8 @@ public class SimpleParameter implements Parameter{
 
     private Object[] value;
 
-    public void fillSimpleParameter(HttpServletRequest request) {
+    @Override
+    public void fill(HttpServletRequest request) {
         SimpleParameter simplePara = this;
         String[] values = request.getParameterValues(simplePara.getName());
         simplePara.setValue(values);

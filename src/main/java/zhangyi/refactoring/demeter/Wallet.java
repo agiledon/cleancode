@@ -1,6 +1,6 @@
 package zhangyi.refactoring.demeter;
 
-public class Wallet {
+public class Wallet implements Payable {
     private float value;
     public float getTotalMoney() {
         return value;
@@ -17,5 +17,14 @@ public class Wallet {
 
     boolean isEnough(float payment) {
         return getTotalMoney() > payment;
+    }
+
+    @Override
+    public void pay(float payment) {
+        if (isEnough(payment)) {
+            subtractMoney(payment);
+        } else {
+            //money not enough
+        }
     }
 }

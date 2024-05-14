@@ -9,7 +9,7 @@ public class Customer implements Payable {
 
     @Override
     public void pay(float payment) {
-        if (myWallet.getTotalMoney() > payment) {
+        if (myWallet.isEnough(payment)) {
             myWallet.subtractMoney(payment);
         } else {
             //money not enough

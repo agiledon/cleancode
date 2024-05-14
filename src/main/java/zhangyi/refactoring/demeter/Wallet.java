@@ -14,4 +14,8 @@ public class Wallet {
     public void subtractMoney(float debit) {
         value -= debit;
     }
+
+    boolean isEnough(float payment) {
+        return getTotalMoney() > payment;
+    }
 }

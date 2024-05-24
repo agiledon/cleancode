@@ -2,23 +2,43 @@ package zhangyi.cleancode.fitness;
 
 public class HtmlUtil {
     public static String testableHtml(PageData pageData, boolean includeSuiteSetup) throws Exception {
-        WikiPage wikiPage = pageData.getWikiPage();
-        StringBuffer buffer = new StringBuffer();
         if (isTestPage(pageData)) {
+            StringBuffer buffer = new StringBuffer();
+            WikiPage wikiPage = pageData.getWikiPage();
+
             if (includeSuiteSetup) {
-                includeInheritedPage(SuiteResponder.SUITE_SETUP_NAME, wikiPage, buffer, "\n!include -setup .");
+                includeSuiteSetup(wikiPage, buffer);
             }
-            includeInheritedPage("SetUp", wikiPage, buffer, "\n!include -setup .");
-        }
-        buffer.append(pageData.getContent());
-        if (isTestPage(pageData)) {
-            includeInheritedPage("TearDown", wikiPage, buffer, "\n!include -teardown .");
+            includeSetup(wikiPage, buffer);
+            includeTestContent(pageData, buffer);
+            includeTeardown(wikiPage, buffer);
             if (includeSuiteSetup) {
-                includeInheritedPage(SuiteResponder.SUITE_TEARDOWN_NAME, wikiPage, buffer, "\n!include -teardown .");
+                includeSuiteTeardown(wikiPage, buffer);
             }
+
+            pageData.setContent(buffer.toString());
         }
-        pageData.setContent(buffer.toString());
         return pageData.getHtml();
+    }
+
+    private static void includeSuiteSetup(WikiPage wikiPage, StringBuffer buffer) {
+        includeInheritedPage(SuiteResponder.SUITE_SETUP_NAME, wikiPage, buffer, "\n!include -setup .");
+    }
+
+    private static void includeSetup(WikiPage wikiPage, StringBuffer buffer) {
+        includeInheritedPage("SetUp", wikiPage, buffer, "\n!include -setup .");
+    }
+
+    private static StringBuffer includeTestContent(PageData pageData, StringBuffer buffer) {
+        return buffer.append(pageData.getContent());
+    }
+
+    private static void includeTeardown(WikiPage wikiPage, StringBuffer buffer) {
+        includeInheritedPage("TearDown", wikiPage, buffer, "\n!include -teardown .");
+    }
+
+    private static void includeSuiteTeardown(WikiPage wikiPage, StringBuffer buffer) {
+        includeInheritedPage(SuiteResponder.SUITE_TEARDOWN_NAME, wikiPage, buffer, "\n!include -teardown .");
     }
 
     private static boolean isTestPage(PageData pageData) {

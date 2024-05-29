@@ -1,25 +1,6 @@
 package zhangyi.cleancode.fitness;
 
 public class TestPageParser {
-    static String parse(PageData pageData, boolean isSuite) {
-        if (isTestPage(pageData)) {
-            StringBuffer newPageContent = new StringBuffer();
-            WikiPage wikiPage = pageData.getWikiPage();
-
-            if (isSuite) {
-                includeSuiteSetup(wikiPage, newPageContent);
-            }
-            includeSetup(wikiPage, newPageContent);
-            includeTestContent(pageData, newPageContent);
-            includeTeardown(wikiPage, newPageContent);
-            if (isSuite) {
-                includeSuiteTeardown(wikiPage, newPageContent);
-            }
-
-            pageData.setContent(newPageContent.toString());
-        }
-        return pageData.getHtml();
-    }
 
     static void includeSuiteSetup(WikiPage wikiPage, StringBuffer newPageContent) {
         includeInheritedPage(wikiPage, newPageContent, SuiteResponder.SUITE_SETUP_NAME, "-setup");
@@ -56,5 +37,25 @@ public class TestPageParser {
                     .append(pagePathName)
                     .append("\n");
         }
+    }
+
+    public String parse(PageData pageData, boolean isSuite) {
+        if (isTestPage(pageData)) {
+            StringBuffer newPageContent = new StringBuffer();
+            WikiPage wikiPage = pageData.getWikiPage();
+
+            if (isSuite) {
+                includeSuiteSetup(wikiPage, newPageContent);
+            }
+            includeSetup(wikiPage, newPageContent);
+            includeTestContent(pageData, newPageContent);
+            includeTeardown(wikiPage, newPageContent);
+            if (isSuite) {
+                includeSuiteTeardown(wikiPage, newPageContent);
+            }
+
+            pageData.setContent(newPageContent.toString());
+        }
+        return pageData.getHtml();
     }
 }

@@ -2,6 +2,12 @@ package zhangyi.cleancode.fitness;
 
 public class TestPageParser {
 
+    private PageData pageData;
+
+    public TestPageParser(PageData pageData) {
+        this.pageData = pageData;
+    }
+
     static void includeSuiteSetup(WikiPage wikiPage, StringBuffer newPageContent) {
         includeInheritedPage(wikiPage, newPageContent, SuiteResponder.SUITE_SETUP_NAME, "-setup");
     }
@@ -39,23 +45,23 @@ public class TestPageParser {
         }
     }
 
-    public String parse(PageData pageData, boolean isSuite) {
-        if (isTestPage(pageData)) {
+    public String parse(boolean isSuite) {
+        if (isTestPage(this.pageData)) {
             StringBuffer newPageContent = new StringBuffer();
-            WikiPage wikiPage = pageData.getWikiPage();
+            WikiPage wikiPage = this.pageData.getWikiPage();
 
             if (isSuite) {
                 includeSuiteSetup(wikiPage, newPageContent);
             }
             includeSetup(wikiPage, newPageContent);
-            includeTestContent(pageData, newPageContent);
+            includeTestContent(this.pageData, newPageContent);
             includeTeardown(wikiPage, newPageContent);
             if (isSuite) {
                 includeSuiteTeardown(wikiPage, newPageContent);
             }
 
-            pageData.setContent(newPageContent.toString());
+            this.pageData.setContent(newPageContent.toString());
         }
-        return pageData.getHtml();
+        return this.pageData.getHtml();
     }
 }

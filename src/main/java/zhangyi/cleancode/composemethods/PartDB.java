@@ -1,9 +1,6 @@
 package zhangyi.cleancode.composemethods;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,21 +13,34 @@ public class PartDB {
     private List<Part> partList = new ArrayList<Part>();
 
     public void populate() throws Exception {
-        Connection c = null;
+        Connection connection = null;
         try {
-            Class.forName(DRIVER_CLASS);
-            c = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-            Statement stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(SQL_SELECT_PARTS);
-            while (rs.next()) {
-                Part p = new Part();
-                p.setName(rs.getString("name"));
-                p.setBrand(rs.getString("brand"));
-                p.setRetailPrice(rs.getDouble("retail_price"));
-                partList.add(p);
-            }
+            connection = getConnection();
+            ResultSet resultSet = executeQuery(connection);
+            populateParts(resultSet);
         } finally {
-            c.close();
+            connection.close();
         }
+    }
+
+    private void populateParts(ResultSet rs) throws SQLException {
+        // populate parts
+        while (rs.next()) {
+            Part p = new Part();
+            p.setName(rs.getString("name"));
+            p.setBrand(rs.getString("brand"));
+            p.setRetailPrice(rs.getDouble("retail_price"));
+            partList.add(p);
+        }
+    }
+
+    private ResultSet executeQuery(Connection c) throws SQLException {
+        Statement stmt = c.createStatement();
+        return stmt.executeQuery(SQL_SELECT_PARTS);
+    }
+
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(DRIVER_CLASS);
+        return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }
 }

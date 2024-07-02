@@ -9,35 +9,68 @@ import java.util.List;
 
 public class TrainingService {
     private DatabasePool dbPool;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private Statement statement;
+    private ResultSet resultSet;
+    private boolean transactionState;
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-        Statement s = null;
-        ResultSet rs = null;
-        boolean transactionState = false;
+        initTransaction();
         try {
-            s = c.createStatement();
-            transactionState = c.getAutoCommit();
-            c.setAutoCommit(false);
+            enableTransaction();
+
+            // business logic
             for (Training training : trainings) {
                 addTrainingItem(customer, training);
             }
             addOrder(customer, trainings);
-            c.commit();
+
+            commitTransaction();
         } catch (SQLException sqlx) {
-            c.rollback();
+            rollbackTransaction();
             throw sqlx;
         } finally {
-            try {
-                c.setAutoCommit(transactionState);
-                dbPool.release(c);
-                if (s != null) s.close();
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
-            } catch (SQLException ignored) {
-            }
+            cleanTransaction();
         }
+    }
+
+    private void cleanTransaction() {
+        // clean the related resources
+        try {
+            connection.setAutoCommit(transactionState);
+            dbPool.release(connection);
+            if (statement != null) statement.close();
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
+        } catch (SQLException ignored) {
+        }
+    }
+
+    private void rollbackTransaction() throws SQLException {
+        // rollback transaction
+        connection.rollback();
+    }
+
+    private void commitTransaction() throws SQLException {
+        // commit transaction
+        connection.commit();
+    }
+
+    private void enableTransaction() throws SQLException {
+        // enable transaction
+        statement = connection.createStatement();
+        transactionState = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+    }
+
+    private void initTransaction() {
+        // initial the related resources
+        connection = null;
+        preparedStatement = null;
+        statement = null;
+        resultSet = null;
+        transactionState = false;
     }
 
     private void addOrder(Customer customer, List<Training> trainings) {

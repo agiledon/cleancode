@@ -10,23 +10,13 @@ public class TrainingService {
     private final Transaction transaction = new Transaction();
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        transaction.init();
-        try {
-            transaction.enable();
-
+        transaction.executeWith(() -> {
             // business logic
             for (Training training : trainings) {
                 addTrainingItem(customer, training);
             }
             addOrder(customer, trainings);
-
-            transaction.commit();
-        } catch (SQLException sqlx) {
-            transaction.rollback();
-            throw sqlx;
-        } finally {
-            transaction.clean();
-        }
+        });
     }
 
     private void addOrder(Customer customer, List<Training> trainings) {

@@ -1,21 +1,64 @@
 package zhangyi.cleancode.slap.service;
 
+import zhangyi.cleancode.slap.entity.Customer;
+import zhangyi.cleancode.slap.entity.Training;
 import zhangyi.cleancode.slap.infrastructure.DatabasePool;
 
 import java.sql.*;
+import java.util.List;
 
 public class Transaction {
-    DatabasePool dbPool;
-    Connection connection;
-    PreparedStatement preparedStatement;
-    Statement statement;
-    ResultSet resultSet;
-    boolean transactionState;
+    private DatabasePool dbPool;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private Statement statement;
+    private ResultSet resultSet;
+    private boolean transactionState;
 
     public Transaction() {
     }
 
-    void clean() {
+    public void executeWith(TransactionSupport ts) throws SQLException {
+        this.init();
+        try {
+            this.enable();
+            ts.execute();
+            this.commit();
+        } catch (SQLException sqlx) {
+            this.rollback();
+            throw sqlx;
+        } finally {
+            this.clean();
+        }
+    }
+
+    private void init() {
+        // initial the related resources
+        connection = null;
+        preparedStatement = null;
+        statement = null;
+        resultSet = null;
+        transactionState = false;
+    }
+
+    private void enable() throws SQLException {
+        // enable transaction
+        statement = connection.createStatement();
+        transactionState = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+    }
+
+    private void commit() throws SQLException {
+        // commit transaction
+        connection.commit();
+    }
+
+    private void rollback() throws SQLException {
+        // rollback transaction
+        connection.rollback();
+    }
+
+    private void clean() {
         // clean the related resources
         try {
             connection.setAutoCommit(transactionState);
@@ -25,31 +68,5 @@ public class Transaction {
             if (resultSet != null) resultSet.close();
         } catch (SQLException ignored) {
         }
-    }
-
-    void rollback() throws SQLException {
-        // rollback transaction
-        connection.rollback();
-    }
-
-    void commit() throws SQLException {
-        // commit transaction
-        connection.commit();
-    }
-
-    void enable() throws SQLException {
-        // enable transaction
-        statement = connection.createStatement();
-        transactionState = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-    }
-
-    void init() {
-        // initial the related resources
-        connection = null;
-        preparedStatement = null;
-        statement = null;
-        resultSet = null;
-        transactionState = false;
     }
 }

@@ -10,9 +10,9 @@ public class TrainingService {
     private final Transaction transaction = new Transaction();
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
-        transaction.initTransaction();
+        transaction.init();
         try {
-            transaction.enableTransaction();
+            transaction.enable();
 
             // business logic
             for (Training training : trainings) {
@@ -20,12 +20,12 @@ public class TrainingService {
             }
             addOrder(customer, trainings);
 
-            transaction.commitTransaction();
+            transaction.commit();
         } catch (SQLException sqlx) {
-            transaction.rollbackTransaction();
+            transaction.rollback();
             throw sqlx;
         } finally {
-            transaction.cleanTransaction();
+            transaction.clean();
         }
     }
 

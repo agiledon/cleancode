@@ -15,7 +15,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    void cleanTransaction() {
+    void clean() {
         // clean the related resources
         try {
             connection.setAutoCommit(transactionState);
@@ -27,24 +27,24 @@ public class Transaction {
         }
     }
 
-    void rollbackTransaction() throws SQLException {
+    void rollback() throws SQLException {
         // rollback transaction
         connection.rollback();
     }
 
-    void commitTransaction() throws SQLException {
+    void commit() throws SQLException {
         // commit transaction
         connection.commit();
     }
 
-    void enableTransaction() throws SQLException {
+    void enable() throws SQLException {
         // enable transaction
         statement = connection.createStatement();
         transactionState = connection.getAutoCommit();
         connection.setAutoCommit(false);
     }
 
-    void initTransaction() {
+    void init() {
         // initial the related resources
         connection = null;
         preparedStatement = null;

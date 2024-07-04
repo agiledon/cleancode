@@ -7,7 +7,11 @@ import java.sql.*;
 import java.util.List;
 
 public class TrainingService {
-    private final Transaction transaction = new Transaction();
+    private Transaction transaction;
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
 
     public void subscribe(List<Training> trainings, Customer customer) throws SQLException {
         transaction.executeWith(() -> {

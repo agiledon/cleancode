@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ParameterController {
     public void fillParameters(HttpServletRequest request, ParameterGraph parameterGraph) {
-        parameterGraph.fillValues(request);
+        parameterGraph.fillValues(request::getParameterValues);
     }
-
 }

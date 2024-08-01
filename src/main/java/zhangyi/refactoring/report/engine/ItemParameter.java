@@ -1,11 +1,10 @@
 package zhangyi.refactoring.report.engine;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ItemParameter implements Parameter {
     @Override
-    public void fill(HttpServletRequest request) {
+    public void fill(ParameterRequest request) {
         ItemParameter itemPara = this;
         for (Item item : itemPara.getItems()) {
             String[] values = request.getParameterValues(item.getName());

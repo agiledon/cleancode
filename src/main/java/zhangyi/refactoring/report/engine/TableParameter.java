@@ -1,14 +1,12 @@
 package zhangyi.refactoring.report.engine;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class TableParameter implements Parameter {
     private String rowName;
     private String columnName;
     private String dataCellName;
 
     @Override
-    public void fill(HttpServletRequest request) {
+    public void fill(ParameterRequest request) {
         TableParameter tablePara = this;
         String[] rows =
                 request.getParameterValues(tablePara.getRowName());

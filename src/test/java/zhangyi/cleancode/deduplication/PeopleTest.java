@@ -5,8 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static zhangyi.cleancode.deduplication.People.equalsAge;
-import static zhangyi.cleancode.deduplication.People.equalsName;
+import static zhangyi.cleancode.deduplication.PersonCriteria.*;
 
 
 public class PeopleTest {
@@ -29,5 +28,13 @@ public class PeopleTest {
 
         result = people.findBy(equalsName("Bruce").and(equalsAge(40)));
         assertThat(result).hasSize(1).containsOnly(new Person("Bruce", 40, Gender.Male));
+
+        result = people.findBy(greaterThanAge(33).and(equalsGender(Gender.Female)));
+        assertThat(result).hasSize(1).containsOnly(new Person("Marry", 40, Gender.Female));
+
+        result = people.findBy(greaterThanAge(33).or(equalsAge(33)).and(equalsGender(Gender.Female)));
+        assertThat(result).hasSize(2).containsOnly(
+                new Person("Rose", 33, Gender.Female),
+                new Person("Marry", 40, Gender.Female));
     }
 }

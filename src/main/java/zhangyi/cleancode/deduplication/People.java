@@ -8,18 +8,6 @@ import java.util.stream.Collectors;
 public class People {
     private List<Person> persons = new ArrayList<Person>();
 
-    public static Predicate<Person> equalsName(String name) {
-        return p -> p.getName().equals(name);
-    }
-
-    public static Predicate<Person> equalsAge(int age) {
-        return p -> p.getAge() == age;
-    }
-
-    public static Predicate<Person> equalsGender(Gender gender) {
-        return p -> p.getGender().equals(gender);
-    }
-
     public List<Person> findBy(Predicate<Person> predicate) {
         return persons.stream().filter(predicate).collect(Collectors.toList());
     }

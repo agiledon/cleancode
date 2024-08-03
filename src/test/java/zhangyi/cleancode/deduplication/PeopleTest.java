@@ -7,7 +7,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static zhangyi.cleancode.deduplication.PersonCriteria.*;
 
-
 public class PeopleTest {
     @Test
     public void should_demonstrate_how_to_find_person_by_specific_criteria() {

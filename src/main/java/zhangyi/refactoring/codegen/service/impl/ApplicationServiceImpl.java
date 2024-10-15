@@ -36,8 +36,9 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
     protected static final Path BASE_RESOURCE_PATH = Paths.get("src", "main", "resources");
     protected static final Path BASE_JAVA_PATH = Paths.get("src", "main", "java");
     protected static final Path BASE_TEST_PATH = Paths.get("src", "test", "java");
-
     private SqlHelper sqlHelper;
+    private final ProjectFileWriter projectFileWriter;
+
     private final static Map<String, String> TYPE_MAP = new HashMap<>();
 
     static {
@@ -51,17 +52,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         Path projectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(applicationMetadata.getProject().getArtifact());
         notExistThenCreate(projectPath);
         String fileName = projectPath.resolve("pom.xml").toString();
-        try (Writer writer = new FileWriter(fileName)) {
-            Template temp = configuration.getTemplate("parent-pom.ftl");
-            temp.process(applicationMetadata, writer);
-            return fileName;
-        } catch (IOException e) {
-            log.error("获取 应用父工程pom文件出错！{}", e);
-            throw new RuntimeException("获取 应用父工程pom文件出错！");
-        } catch (TemplateException e) {
-            log.error("生成应用父工程pom文件出错！{}", e);
-            throw new RuntimeException("生成应用父工程pom文件出错！");
-        }
+        return projectFileWriter.write(applicationMetadata, fileName);
     }
 
     @Override

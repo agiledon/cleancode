@@ -20,10 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 @Slf4j
@@ -49,7 +46,11 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
     @Override
     public String generateParentProject(ApplicationMetadata applicationMetadata) {
-        Path projectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(applicationMetadata.getProject().getArtifact());
+        Path tempProjectPath = TEMP_PROJECT_ROOT_PATH.get();
+        if (Objects.isNull(tempProjectPath)) {
+            tempProjectPath = createTempProjectPath();
+        }
+        Path projectPath = tempProjectPath.resolve(applicationMetadata.getProject().getArtifact());
         notExistThenCreate(projectPath);
         String fileName = projectPath.resolve("pom.xml").toString();
         return projectFileWriter.write(applicationMetadata, fileName);
@@ -57,15 +58,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
     @Override
     public Path generateParentProject(ApplicationMetadataDTO applicationMetadata) {
-        //创建临时目录
-        Path tempProjectRootDirectory;
-        try {
-            tempProjectRootDirectory = Files.createTempDirectory("project-");
-            TEMP_PROJECT_ROOT_PATH.set(tempProjectRootDirectory);
-        } catch (IOException e) {
-            log.error("创建临时项目根目录失败！", e);
-            throw new RuntimeException(e);
-        }
+        Path tempProjectRootDirectory = createTempProjectPath();
         Path projectPath = tempProjectRootDirectory.resolve(applicationMetadata.getProject().getArtifactId());
         notExistThenCreate(projectPath);
         String fileName = projectPath.resolve("pom.xml").toString();
@@ -81,6 +74,19 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
             log.error("生成应用父工程pom文件出错！{}", e);
             throw new RuntimeException("生成应用父工程pom文件出错！");
         }
+    }
+
+    private static Path createTempProjectPath() {
+        //创建临时目录
+        Path tempProjectRootDirectory;
+        try {
+            tempProjectRootDirectory = Files.createTempDirectory("project-");
+            TEMP_PROJECT_ROOT_PATH.set(tempProjectRootDirectory);
+        } catch (IOException e) {
+            log.error("创建临时项目根目录失败！", e);
+            throw new RuntimeException(e);
+        }
+        return tempProjectRootDirectory;
     }
 
     public void copyMavenFiles2Project(Path projectPath) {

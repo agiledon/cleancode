@@ -30,7 +30,7 @@ class ApplicationServiceImplTest {
         String templateName = "parent-pom.ftl";
         String fileName = "demo1-parent/pom.xml";
         ProjectFileWriter mockedWriter = mock(ProjectFileWriter.class);
-        when(mockedWriter.write(eq(applicationMetadata), eq(fileName))).thenReturn(fileName);
+        when(mockedWriter.write(eq(applicationMetadata), anyString())).thenReturn(fileName);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, mockedWriter);
 
@@ -38,7 +38,7 @@ class ApplicationServiceImplTest {
         String generatedFileName = applicationService.generateParentProject(applicationMetadata);
 
         // then
-        verify(mockedWriter).write(eq(applicationMetadata), eq(fileName));
+        verify(mockedWriter).write(eq(applicationMetadata), anyString());
         assertThat(generatedFileName).isEqualTo(fileName);
     }
 }

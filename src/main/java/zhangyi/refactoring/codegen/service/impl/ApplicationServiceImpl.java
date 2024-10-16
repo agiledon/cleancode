@@ -46,22 +46,32 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
     @Override
     public String generateParentProject(ApplicationMetadata applicationMetadata) {
+        String resolvedPath = applicationMetadata.getProject().getArtifact();
+        Path projectPath = resolveProjectPath(resolvedPath);
+        String fileName = resolvePomFileName(projectPath);
+        return projectFileWriter.write(applicationMetadata, fileName);
+    }
+
+    private String resolvePomFileName(Path projectPath) {
+        return projectPath.resolve("pom.xml").toString();
+    }
+
+    private Path resolveProjectPath(String resolvedPath) {
         Path tempProjectPath = TEMP_PROJECT_ROOT_PATH.get();
         if (Objects.isNull(tempProjectPath)) {
             tempProjectPath = createTempProjectPath();
         }
-        Path projectPath = tempProjectPath.resolve(applicationMetadata.getProject().getArtifact());
-        notExistThenCreate(projectPath);
-        String fileName = projectPath.resolve("pom.xml").toString();
-        return projectFileWriter.write(applicationMetadata, fileName);
+        Path projectPath = tempProjectPath.resolve(resolvedPath);
+        createIfNotExist(projectPath);
+        return projectPath;
     }
 
     @Override
     public Path generateParentProject(ApplicationMetadataDTO applicationMetadata) {
         Path tempProjectRootDirectory = createTempProjectPath();
         Path projectPath = tempProjectRootDirectory.resolve(applicationMetadata.getProject().getArtifactId());
-        notExistThenCreate(projectPath);
-        String fileName = projectPath.resolve("pom.xml").toString();
+        createIfNotExist(projectPath);
+        String fileName = resolvePomFileName(projectPath);
         try (Writer writer = new FileWriter(fileName)) {
             configuration.getTemplate("parent-pom.ftl").process(applicationMetadata, writer);
             //复制.mvn目录和mvnw、mvnw.cmd
@@ -100,7 +110,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
             Files.copy(is1, projectPath.resolve(r1.getFilename()));
             Files.copy(is2, projectPath.resolve(r2.getFilename()));
             Path wrapper = projectPath.resolve(".mvn").resolve("wrapper");
-            notExistThenCreate(wrapper);
+            createIfNotExist(wrapper);
             Files.copy(is3, wrapper.resolve(r3.getFilename()));
             Files.copy(is4, wrapper.resolve(r4.getFilename()));
         } catch (IOException e) {
@@ -117,8 +127,8 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
     public String generateChildrenProject(@NotNull ModuleMetadata moduleMetadata) {
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifact());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifact());
-        notExistThenCreate(projectPath);
-        String fileName = projectPath.resolve("pom.xml").toString();
+        createIfNotExist(projectPath);
+        String fileName = resolvePomFileName(projectPath);
         try (Writer writer = new FileWriter(fileName)) {
             Template temp = configuration.getTemplate("children-pom.ftl");
             temp.process(moduleMetadata, writer);
@@ -157,11 +167,11 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
+        createIfNotExist(projectPath);
         Path entityPath = projectPath.resolve(BASE_JAVA_PATH)
                 .resolve(Paths.get("", moduleMetadata.getPackageName().split("\\.")))
                 .resolve("entity");
-        notExistThenCreate(entityPath);
+        createIfNotExist(entityPath);
         String fileName =
                 entityPath.resolve(String.format("%s.java", Strings.capFirst(domainMetadata.getNameEnglish()))).toString();
         try (Writer writer = new FileWriter(fileName)) {
@@ -179,11 +189,11 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
     protected void generateEntities(ModuleMetadataDTO moduleMetadata, List<DomainMetadataDTO> domainMetadata) {
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
+        createIfNotExist(projectPath);
         Path entityPath = projectPath.resolve(BASE_JAVA_PATH)
                 .resolve(Paths.get("", moduleMetadata.getPackageName().split("\\.")))
                 .resolve("entity");
-        notExistThenCreate(entityPath);
+        createIfNotExist(entityPath);
         for (DomainMetadataDTO domain : domainMetadata) {
             Map<String, Object> metaData = new HashMap<>();
             metaData.put("domain", domain);
@@ -207,8 +217,8 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
     protected void generateChildrenProject(ModuleMetadataDTO moduleMetadata) {
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
-        String fileName = projectPath.resolve("pom.xml").toString();
+        createIfNotExist(projectPath);
+        String fileName = resolvePomFileName(projectPath);
         try (Writer writer = new FileWriter(fileName)) {
             configuration.getTemplate("children-pom.ftl").process(moduleMetadata, writer);
             generateSrc(projectPath, moduleMetadata.getPackageName());
@@ -247,11 +257,11 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
+        createIfNotExist(projectPath);
         Path controllerPath = projectPath.resolve(BASE_JAVA_PATH)
                 .resolve(Paths.get("", moduleMetadata.getPackageName().split("\\.")))
                 .resolve("controller");
-        notExistThenCreate(controllerPath);
+        createIfNotExist(controllerPath);
         String fileName = controllerPath
                 .resolve(String.format("%sController.java", capFirstName)).toString();
 
@@ -303,13 +313,13 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         metaData.put("package", moduleMetadata.getPackageName() + ".service.impl");
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
+        createIfNotExist(projectPath);
         Path servicePath = projectPath.resolve(BASE_JAVA_PATH)
                 .resolve(Paths.get("", moduleMetadata.getPackageName().split("\\."))).resolve("service");
         String serviceInterfaceFileName = servicePath.resolve(String.format("%sService.java",
                 capFirstName)).toString();
         Path implPath = servicePath.resolve("impl");
-        notExistThenCreate(implPath);
+        createIfNotExist(implPath);
         String serviceImplFileName = implPath.resolve(String.format("%sServiceImpl.java", capFirstName)).toString();
         try (Writer interfaceWriter = new FileWriter(serviceInterfaceFileName);
              Writer implWriter = new FileWriter(serviceImplFileName)) {
@@ -351,7 +361,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
         Path javaPath = getJavaPath(moduleMetadata);
         Path mapperJavaPath = javaPath.resolve("mapper");
-        notExistThenCreate(mapperJavaPath);
+        createIfNotExist(mapperJavaPath);
         String fileName = mapperJavaPath.resolve(String.format("%sMapper.java", capFirstDomainName)).toString();
         try (Writer writer = new FileWriter(fileName)) {
             configuration.getTemplate("mapper.ftl").process(metaData, writer);
@@ -382,7 +392,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
         Path resourcePath = getResourcePath(moduleMetadata);
         Path mapperXmlPath = resourcePath.resolve("mapper");
-        notExistThenCreate(mapperXmlPath);
+        createIfNotExist(mapperXmlPath);
         String fileName = mapperXmlPath.resolve(String.format("%sMapper.xml", capFirstDomainName)).toString();
         try (Writer writer = new FileWriter(fileName)) {
             configuration.getTemplate("mapper-xml.ftl").process(metaData, writer);
@@ -401,10 +411,10 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         }
     }
 
-    protected static Path getJavaPath(ModuleMetadataDTO moduleMetadata) {
+    protected Path getJavaPath(ModuleMetadataDTO moduleMetadata) {
         Path projectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path modulePath = projectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(modulePath);
+        createIfNotExist(modulePath);
 
         Path basePackage = Paths.get("", moduleMetadata.getPackageName().split("\\."));
         return modulePath.resolve(BASE_JAVA_PATH).resolve(basePackage);
@@ -453,7 +463,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
         Path resourcePath = getResourcePath(moduleMetadata);
         Path sqlPath = resourcePath.resolve(Paths.get("sql", "ddl"));
-        notExistThenCreate(sqlPath);
+        createIfNotExist(sqlPath);
         try (FileWriter fileWriter = new FileWriter(sqlPath.resolve("schema.sql").toFile())) {
             fileWriter.write(sqlContent.toString());
         } catch (IOException e) {
@@ -498,13 +508,13 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         }
     }
 
-    private static Path getResourcePath(ModuleMetadataDTO moduleMetadata) {
+    private Path getResourcePath(ModuleMetadataDTO moduleMetadata) {
         Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
         Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
-        notExistThenCreate(projectPath);
+        createIfNotExist(projectPath);
 
         Path resourcePath = projectPath.resolve(BASE_RESOURCE_PATH);
-        notExistThenCreate(resourcePath);
+        createIfNotExist(resourcePath);
         return resourcePath;
     }
 
@@ -514,7 +524,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         metaData.put("package", moduleMetadata.getPackageName());
 
         Path sourceRootPath = getJavaPath(moduleMetadata);
-        notExistThenCreate(sourceRootPath);
+        createIfNotExist(sourceRootPath);
         String fileName = sourceRootPath
                 .resolve(String.format("%sApplication.java", Strings.capFirst(moduleMetadata.getArtifactId()))).toString();
         try (Writer writer = new FileWriter(fileName)) {
@@ -545,7 +555,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
         }
     }
 
-    protected static void notExistThenCreate(Path projectPath) {
+    protected void createIfNotExist(Path projectPath) {
         if (Files.notExists(projectPath)) {
             try {
                 Files.createDirectories(projectPath);

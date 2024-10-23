@@ -12,6 +12,11 @@ public class ModuleMetadata {
      */
     @NotBlank
     private String name;
+
+    public ModuleMetadata(String name) {
+        this.name = name;
+    }
+
     /**
      * 项目 group, 默认为 父项目的group
      */
@@ -19,7 +24,7 @@ public class ModuleMetadata {
     /**
      * 项目 artifact,默认为 项目name
      */
-    private String artifact;
+    private String artifactId;
     /**
      * 项目 包名,默认为 项目group.artifact
      */

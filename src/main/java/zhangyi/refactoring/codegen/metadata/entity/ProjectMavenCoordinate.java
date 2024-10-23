@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMavenCoordinate {
-    private String group;
-    private String artifact;
+    private String groupId;
+    private String artifactId;
     private String version;
 }

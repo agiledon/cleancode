@@ -1,10 +1,8 @@
 package zhangyi.refactoring.codegen.service.impl;
 
 import org.junit.jupiter.api.Test;
+import zhangyi.refactoring.codegen.fixtures.ApplicationMetadataFixture;
 import zhangyi.refactoring.codegen.metadata.entity.ApplicationMetadata;
-import zhangyi.refactoring.codegen.metadata.entity.ProjectMavenCoordinate;
-
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -14,7 +12,7 @@ class ApplicationServiceImplTest {
     @Test
     public void should_generate_parent_pom_file_by_ProjectFileWriter() {
         // given
-        ApplicationMetadata applicationMetadata = createApplicationMetadata();
+        ApplicationMetadata applicationMetadata = ApplicationMetadataFixture.create(null);
 
         String fileName = "demo1-parent/pom.xml";
         ProjectFileWriter mockedWriter = mock(ProjectFileWriter.class);
@@ -28,21 +26,5 @@ class ApplicationServiceImplTest {
         // then
         verify(mockedWriter).write(eq(applicationMetadata), anyString());
         assertThat(generatedFileName).isEqualTo(fileName);
-    }
-
-    private static ApplicationMetadata createApplicationMetadata() {
-        ApplicationMetadata applicationMetadata = new ApplicationMetadata();
-
-        String projectName = "demo3-parent";
-        applicationMetadata.setName(projectName);
-
-        String projectGroup = "com.xm";
-        String projectArtifact = "demo1-parent";
-        String projectVersion = "1.0-SNAPSHOT";
-        ProjectMavenCoordinate appMavenCoordinate = new ProjectMavenCoordinate(projectGroup, projectArtifact, projectVersion);
-
-        applicationMetadata.setProject(appMavenCoordinate);
-        applicationMetadata.setModules(Arrays.asList("module01", "module02", "module03", "module04"));
-        return applicationMetadata;
     }
 }

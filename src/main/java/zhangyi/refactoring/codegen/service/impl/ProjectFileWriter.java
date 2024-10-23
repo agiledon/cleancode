@@ -1,7 +1,6 @@
 package zhangyi.refactoring.codegen.service.impl;
 
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +17,8 @@ public class ProjectFileWriter {
 
     public String write(ApplicationMetadata applicationMetadata, String fileName) {
         try (Writer writer = new FileWriter(fileName)) {
-            Template temp = configuration.getTemplate("parent-pom.ftl");
-            temp.process(applicationMetadata, writer);
+            String projectFileContent = applicationMetadata.generate();
+            writer.write(projectFileContent);
             return fileName;
         } catch (IOException e) {
             log.error("获取应用父工程pom文件出错！{}", e);

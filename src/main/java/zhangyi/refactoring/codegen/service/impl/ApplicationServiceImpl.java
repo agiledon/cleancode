@@ -46,7 +46,7 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
     @Override
     public String generateParentProject(ApplicationMetadata applicationMetadata) {
-        String resolvedPath = applicationMetadata.getProject().getArtifact();
+        String resolvedPath = applicationMetadata.getProject().getArtifactId();
         Path projectPath = resolveProjectPath(resolvedPath);
         String fileName = resolvePomFileName(projectPath);
         return projectFileWriter.write(applicationMetadata, fileName);
@@ -125,15 +125,15 @@ public class ApplicationServiceImpl extends AbstractApplicationService {
 
     @Override
     public String generateChildrenProject(@NotNull ModuleMetadata moduleMetadata) {
-        Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifact());
-        Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifact());
+        Path parentProjectPath = TEMP_PROJECT_ROOT_PATH.get().resolve(moduleMetadata.getParent().getArtifactId());
+        Path projectPath = parentProjectPath.resolve(moduleMetadata.getArtifactId());
         createIfNotExist(projectPath);
         String fileName = resolvePomFileName(projectPath);
         try (Writer writer = new FileWriter(fileName)) {
             Template temp = configuration.getTemplate("children-pom.ftl");
             temp.process(moduleMetadata, writer);
             //修改父项目pom，增加<module></module>
-            parentProjectAddModule(parentProjectPath.resolve("pom.xml").toFile(), moduleMetadata.getArtifact());
+            parentProjectAddModule(parentProjectPath.resolve("pom.xml").toFile(), moduleMetadata.getArtifactId());
             generateSrc(projectPath, moduleMetadata.getPackageName());
             return fileName;
         } catch (IOException e) {

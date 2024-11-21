@@ -24,33 +24,33 @@ class Customer {
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
 
-        for (Rental each : rentals) {
+        for (Rental rental : rentals) {
             double thisAmount = 0;
-            //determine amounts for each line
-            switch (each.getMovie().getPriceCode()) {
+            //determine amounts for rental line
+            switch (rental.getMovie().getPriceCode()) {
                 case Movie.REGULAR:
                     thisAmount += 2;
-                    if (each.getDaysRented() > 2)
-                        thisAmount += (each.getDaysRented() - 2) * 1.5;
+                    if (rental.getDaysRented() > 2)
+                        thisAmount += (rental.getDaysRented() - 2) * 1.5;
                     break;
                 case Movie.NEW_RELEASE:
-                    thisAmount += each.getDaysRented() * 3;
+                    thisAmount += rental.getDaysRented() * 3;
                     break;
                 case Movie.CHILDREN:
                     thisAmount += 1.5;
-                    if (each.getDaysRented() > 3)
-                        thisAmount += (each.getDaysRented() - 3) * 1.5;
+                    if (rental.getDaysRented() > 3)
+                        thisAmount += (rental.getDaysRented() - 3) * 1.5;
                     break;
             }
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two days new release rental
-            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE)
+            if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE)
                     &&
-                    each.getDaysRented() > 1)
+                    rental.getDaysRented() > 1)
                 frequentRenterPoints++;
             //show figures
-            result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
+            result += "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
         }
 

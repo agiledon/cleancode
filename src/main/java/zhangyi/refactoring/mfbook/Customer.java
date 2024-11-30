@@ -28,7 +28,7 @@ class Customer {
             double thisAmount = rental.getCharge();
             frequentRenterPoints += rental.getFrequentRenterPoints();
             //show figures
-            result += "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
+            result += "\t" + rental.getMovieTitle() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
         }
 

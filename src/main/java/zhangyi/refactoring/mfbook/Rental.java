@@ -9,6 +9,10 @@ class Rental {
         this.daysRented = daysRented;
     }
 
+    public String getMovieTitle() {
+        return getMovie().getTitle();
+    }
+
     public int getFrequentRenterPoints() {
         // add frequent renter points
         int frequentRenterPoints = 1;

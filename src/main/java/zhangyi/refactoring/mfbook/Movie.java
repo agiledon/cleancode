@@ -24,4 +24,33 @@ public class Movie {
     public String getTitle() {
         return title;
     }
+
+    public double getCharge(int daysRented) {
+        double thisAmount = 0;
+        //determine amounts for rental line
+        switch (getPriceCode()) {
+            case REGULAR:
+                thisAmount += 2;
+                if (daysRented > 2)
+                    thisAmount += (daysRented - 2) * 1.5;
+                break;
+            case NEW_RELEASE:
+                thisAmount += daysRented * 3;
+                break;
+            case CHILDREN:
+                thisAmount += 1.5;
+                if (daysRented > 3)
+                    thisAmount += (daysRented - 3) * 1.5;
+                break;
+        }
+        return thisAmount;
+    }
+
+    public int getFrequentRenterPoints(int daysRented) {
+        // add frequent renter points
+        int frequentRenterPoints = 1;
+        // add bonus for a two days new release rental
+        if ((getPriceCode() == NEW_RELEASE) && daysRented > 1) frequentRenterPoints++;
+        return frequentRenterPoints;
+    }
 }

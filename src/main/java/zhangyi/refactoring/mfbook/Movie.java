@@ -13,10 +13,6 @@ public class Movie {
         this.priceCode = priceCode;
     }
 
-    public int getPriceCode() {
-        return priceCode;
-    }
-
     public void setPriceCode(int arg) {
         priceCode = arg;
     }
@@ -28,7 +24,7 @@ public class Movie {
     public double getCharge(int daysRented) {
         double thisAmount = 0;
         //determine amounts for rental line
-        switch (getPriceCode()) {
+        switch (priceCode) {
             case REGULAR:
                 thisAmount += 2;
                 if (daysRented > 2)
@@ -50,7 +46,7 @@ public class Movie {
         // add frequent renter points
         int frequentRenterPoints = 1;
         // add bonus for a two days new release rental
-        if ((getPriceCode() == NEW_RELEASE) && daysRented > 1) frequentRenterPoints++;
+        if ((priceCode == NEW_RELEASE) && daysRented > 1) frequentRenterPoints++;
         return frequentRenterPoints;
     }
 }

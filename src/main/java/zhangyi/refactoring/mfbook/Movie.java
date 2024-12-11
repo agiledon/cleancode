@@ -26,19 +26,37 @@ public class Movie {
         //determine amounts for rental line
         switch (priceCode) {
             case REGULAR:
-                thisAmount += 2;
-                if (daysRented > 2)
-                    thisAmount += (daysRented - 2) * 1.5;
+                thisAmount = amountForRegular(daysRented);
                 break;
             case NEW_RELEASE:
-                thisAmount += daysRented * 3;
+                thisAmount = amountForNewRelease(daysRented);
                 break;
             case CHILDREN:
-                thisAmount += 1.5;
-                if (daysRented > 3)
-                    thisAmount += (daysRented - 3) * 1.5;
+                thisAmount = amountForChildren(daysRented);
                 break;
         }
+        return thisAmount;
+    }
+
+    private static double amountForChildren(int daysRented) {
+        double thisAmount = 0;
+        thisAmount += 1.5;
+        if (daysRented > 3)
+            thisAmount += (daysRented - 3) * 1.5;
+        return thisAmount;
+    }
+
+    private static double amountForNewRelease(int daysRented) {
+        double thisAmount = 0;
+        thisAmount += daysRented * 3;
+        return thisAmount;
+    }
+
+    private static double amountForRegular(int daysRented) {
+        double thisAmount = 0;
+        thisAmount += 2;
+        if (daysRented > 2)
+            thisAmount += (daysRented - 2) * 1.5;
         return thisAmount;
     }
 

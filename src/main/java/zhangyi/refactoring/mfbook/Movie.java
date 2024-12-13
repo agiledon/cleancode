@@ -23,18 +23,20 @@ public class Movie {
 
     public double getCharge(int daysRented) {
         double thisAmount = 0;
+        PriceCode priceCodeStrategy = null;
         //determine amounts for rental line
         switch (priceCode) {
             case REGULAR:
-                thisAmount = new RegularPriceCode().amountFor(daysRented);
+                priceCodeStrategy = new RegularPriceCode();
                 break;
             case NEW_RELEASE:
-                thisAmount = new NewReleasePriceCode().amountFor(daysRented);
+                priceCodeStrategy = new NewReleasePriceCode();
                 break;
             case CHILDREN:
-                thisAmount = new ChildrenPriceCode().amountFor(daysRented);
+                priceCodeStrategy = new ChildrenPriceCode();
                 break;
         }
+        thisAmount = priceCodeStrategy.amountFor(daysRented);
         return thisAmount;
     }
 

@@ -1,6 +1,7 @@
 package zhangyi.refactoring.mfbook;
 
-public class RegularPriceCode {
+public class RegularPriceCode extends PriceCode {
+    @Override
     public double amountFor(int daysRented) {
         double thisAmount = 0;
         thisAmount += 2;

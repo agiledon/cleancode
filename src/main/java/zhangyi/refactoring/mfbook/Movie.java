@@ -35,6 +35,8 @@ public class Movie {
             case CHILDREN:
                 priceCodeStrategy = new ChildrenPriceCode();
                 break;
+            default:
+                priceCodeStrategy = new DefaultPriceCode();
         }
         thisAmount = priceCodeStrategy.amountFor(daysRented);
         return thisAmount;

@@ -26,10 +26,14 @@ class Customer {
 
         for (Rental rental : rentals) {
             double thisAmount = rental.getCharge();
-            frequentRenterPoints += rental.getFrequentRenterPoints();
-            //show figures
-            result += "\t" + rental.getMovieTitle() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
+        }
+        for (Rental rental : rentals) {
+            frequentRenterPoints += rental.getFrequentRenterPoints();
+        }
+        for (Rental rental : rentals) {
+            //show figures
+            result += "\t" + rental.getMovieTitle() + "\t" + rental.getCharge() + "\n";
         }
 
         //add footer lines

@@ -1,7 +1,12 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.view;
 
 import org.junit.Before;
 import org.junit.Test;
+import zhangyi.refactoring.mfbook.model.Customer;
+import zhangyi.refactoring.mfbook.model.Movie;
+import zhangyi.refactoring.mfbook.model.Rental;
+import zhangyi.refactoring.mfbook.view.CustomerPlainTextView;
+import zhangyi.refactoring.mfbook.view.CustomerView;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,7 +27,7 @@ public class CustomerViewTest {
     public void setUp() throws Exception {
         regularMovie = new Movie(REGULAR_MOVIE_NAME, 0);
         customer = new Customer(CUSOMTER_NAME);
-        customerView = new CustomerView(customer);
+        customerView = new CustomerPlainTextView(customer);
         newReleaseMovie = new Movie(NEW_RELEASE_MOVIE_NAME, 1);
         childrenMovie = new Movie(CHILDREN_MOVIE, 2);
     }

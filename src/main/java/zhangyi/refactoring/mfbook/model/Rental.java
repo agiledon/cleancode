@@ -1,6 +1,6 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
-class Rental {
+public class Rental {
     private Movie movie;
     private int daysRented;
 

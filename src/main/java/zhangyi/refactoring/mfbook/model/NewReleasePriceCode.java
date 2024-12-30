@@ -1,4 +1,4 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
 public class NewReleasePriceCode extends PriceCode {
     @Override

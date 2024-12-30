@@ -1,13 +1,13 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
 public class Movie {
-    private final PriceCode priceCodeStrategy;
+    private final PriceCode priceCode;
 
     private String title;
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        priceCodeStrategy = PriceCode.getPriceCode(priceCode);
+        this.priceCode = PriceCode.getPriceCode(priceCode);
     }
 
     public String getTitle() {
@@ -15,11 +15,11 @@ public class Movie {
     }
 
     public double getCharge(int daysRented) {
-        return priceCodeStrategy.amountFor(daysRented);
+        return priceCode.amountFor(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
-        return priceCodeStrategy.pointsFor(daysRented);
+        return priceCode.pointsFor(daysRented);
     }
 
 }

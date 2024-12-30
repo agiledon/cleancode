@@ -1,4 +1,4 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
 public class ChildrenPriceCode extends PriceCode {
     @Override

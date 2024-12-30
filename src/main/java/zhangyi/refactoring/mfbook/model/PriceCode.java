@@ -1,4 +1,4 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
 public abstract class PriceCode {
     public static final int REGULAR = 0;

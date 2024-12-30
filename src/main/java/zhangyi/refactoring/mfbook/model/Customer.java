@@ -1,9 +1,9 @@
-package zhangyi.refactoring.mfbook;
+package zhangyi.refactoring.mfbook.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Customer {
+public class Customer {
     private String name;
     private List<Rental> rentals = new ArrayList<>();
 

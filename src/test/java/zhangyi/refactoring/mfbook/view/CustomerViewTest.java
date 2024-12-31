@@ -5,17 +5,12 @@ import org.junit.Test;
 import zhangyi.refactoring.mfbook.model.Customer;
 import zhangyi.refactoring.mfbook.model.Movie;
 import zhangyi.refactoring.mfbook.model.Rental;
-import zhangyi.refactoring.mfbook.view.CustomerPlainTextView;
-import zhangyi.refactoring.mfbook.view.CustomerView;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static zhangyi.refactoring.mfbook.view.CustomerFixture.*;
 
 public class CustomerViewTest {
-    public static final String REGULAR_MOVIE_NAME = "Brave Heart";
-    public static final String NEW_RELEASE_MOVIE_NAME = "Iron Man";
-    public static final String CUSOMTER_NAME = "zhangyi";
-    public static final String CHILDREN_MOVIE = "Kongfu Panda";
     private Movie regularMovie;
     private Customer customer;
 
@@ -24,12 +19,12 @@ public class CustomerViewTest {
     private Movie childrenMovie;
 
     @Before
-    public void setUp() throws Exception {
-        regularMovie = new Movie(REGULAR_MOVIE_NAME, 0);
-        customer = new Customer(CUSOMTER_NAME);
+    public void setUp() {
+        regularMovie = createRegularMovie();
+        newReleaseMovie = createNewReleaseMovie();
+        childrenMovie = createClidrenMovie();
+        customer = new Customer(CUSTOMER_NAME);
         customerView = new CustomerPlainTextView(customer);
-        newReleaseMovie = new Movie(NEW_RELEASE_MOVIE_NAME, 1);
-        childrenMovie = new Movie(CHILDREN_MOVIE, 2);
     }
 
     @Test
@@ -39,7 +34,7 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 2.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -49,7 +44,7 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 3.5;
         int expectedFrequentRenterPoints = 1;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, REGULAR_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -59,7 +54,7 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 3.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -69,7 +64,7 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 9.0;
         int expectedFrequentRenterPoints = 2;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, NEW_RELEASE_MOVIE_NAME, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -79,7 +74,7 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 1.5;
         int expectedFrequentRenterPoints = 1;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
@@ -89,17 +84,13 @@ public class CustomerViewTest {
 
         double expectedTotalAmount = 3.0;
         int expectedFrequentRenterPoints = 1;
-        assertThat(customerView.statement(), is(result(CUSOMTER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
+        assertThat(customerView.statement(), is(result(CUSTOMER_NAME, CHILDREN_MOVIE, expectedTotalAmount, expectedFrequentRenterPoints)));
     }
 
     @Test
     public void should_statement_for_all_kinds_of_movie() {
-        Rental rentalForRegularMovie = new Rental(regularMovie, 3);
-        Rental rentalForNewReleaseMovie = new Rental(newReleaseMovie, 3);
-        Rental rentalForChildrenMovie = new Rental(childrenMovie, 3);
-        customer.addRental(rentalForRegularMovie);
-        customer.addRental(rentalForNewReleaseMovie);
-        customer.addRental(rentalForChildrenMovie);
+        customer = createCustomerWithThreeRentals();
+        customerView = new CustomerPlainTextView(customer);
 
         assertThat(customerView.statement(), is("Rental Record for zhangyi\n\t" +
                 "Brave Heart\t3.5\n" +
@@ -110,9 +101,9 @@ public class CustomerViewTest {
 
     }
 
-    private String result(String customerName, String movieName, double totalAmout, int frequentRenterPoints) {
+    private String result(String customerName, String movieName, double totalAmount, int frequentRenterPoints) {
         return String.format("Rental Record for %s\n\t" +
                 "%s\t%s\nAmount owed is %s\n" +
-                "You earned %d frequent renter points", customerName, movieName, totalAmout, totalAmout, frequentRenterPoints);
+                "You earned %d frequent renter points", customerName, movieName, totalAmount, totalAmount, frequentRenterPoints);
     }
 }

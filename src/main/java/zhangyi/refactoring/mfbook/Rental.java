@@ -1,6 +1,6 @@
 package zhangyi.refactoring.mfbook;
 
-class Rental {
+public class Rental {
     private Movie movie;
     private int daysRented;
 
@@ -9,11 +9,19 @@ class Rental {
         this.daysRented = daysRented;
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
+
     public int getDaysRented() {
         return daysRented;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public double getCharge() {
+        return movie.getPrice().getCharge(daysRented);
+    }
+
+    public int getFrequentRenterPoints() {
+        return movie.getPrice().getFrequentRenterPoints(daysRented);
     }
 }

@@ -1,3 +1,4 @@
+// Movie.java
 package zhangyi.refactoring.mfbook;
 
 class Movie {
@@ -25,7 +26,8 @@ class Movie {
                 price = new ChildrenPrice();
                 break;
             default:
-                throw new IllegalArgumentException("Incorrect Price Code");
+                price = new NullPrice(); // 使用NullPrice处理未知的priceCode
+                break;
         }
     }
 

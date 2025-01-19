@@ -25,7 +25,7 @@ class Customer {
 
         for (Rental each : rentals) {
             // show figures for this rental
-            result.append("\t").append(each.getMovie().getTitle()).append("\t").append(each.getAmount()).append("\n");
+            result.append("\t").append(each.getMovieTitle()).append("\t").append(each.getAmount()).append("\n");
         }
 
         // add footer lines

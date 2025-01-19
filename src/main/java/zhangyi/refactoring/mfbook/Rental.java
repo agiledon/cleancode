@@ -1,3 +1,4 @@
+// Rental.java
 package zhangyi.refactoring.mfbook;
 
 class Rental {
@@ -23,5 +24,10 @@ class Rental {
 
     public int getFrequentRenterPoints() {
         return movie.getFrequentRenterPoints(daysRented);
+    }
+
+    // 添加代理方法
+    public String getMovieTitle() {
+        return movie.getTitle();
     }
 }

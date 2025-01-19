@@ -11,24 +11,7 @@ class Movie {
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        setPriceCode(priceCode);
-    }
-
-    public void setPriceCode(int priceCode) {
-        switch (priceCode) {
-            case REGULAR:
-                price = new RegularPrice();
-                break;
-            case NEW_RELEASE:
-                price = new NewReleasePrice();
-                break;
-            case CHILDREN:
-                price = new ChildrenPrice();
-                break;
-            default:
-                price = new NullPrice(); // 使用NullPrice处理未知的priceCode
-                break;
-        }
+        this.price = Price.createPrice(priceCode); // 调用Price的工厂方法
     }
 
     public String getTitle() {

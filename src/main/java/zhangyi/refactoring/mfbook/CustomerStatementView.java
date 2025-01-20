@@ -1,12 +1,13 @@
 package zhangyi.refactoring.mfbook;
 
-public class CustomerStatementView {
+public class CustomerStatementView implements StatementGenerator {
     private Customer customer;
 
     public CustomerStatementView(Customer customer) {
         this.customer = customer;
     }
 
+    @Override
     public String generateStatement() {
         StringBuilder result = new StringBuilder();
         result.append("Rental Record for ").append(customer.getName()).append("\n");

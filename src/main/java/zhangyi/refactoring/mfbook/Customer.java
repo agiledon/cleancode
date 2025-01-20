@@ -1,10 +1,9 @@
-// Customer.java
 package zhangyi.refactoring.mfbook;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Customer {
+public class Customer {
     private String name;
     private List<Rental> rentals = new ArrayList<>();
 
@@ -20,33 +19,23 @@ class Customer {
         return name;
     }
 
-    public String statement() {
-        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-
-        for (Rental each : rentals) {
-            // show figures for this rental
-            result.append("\t").append(each.getMovieTitle()).append("\t").append(each.getAmount()).append("\n");
-        }
-
-        // add footer lines
-        result.append("Amount owed is ").append(calculateTotalAmount()).append("\n");
-        result.append("You earned ").append(calculateTotalFrequentRenterPoints()).append(" frequent renter points");
-        return result.toString();
+    public List<Rental> getRentals() {
+        return rentals;
     }
 
-    private double calculateTotalAmount() {
-        double totalAmount = 0;
+    public double getTotalCharge() {
+        double result = 0;
         for (Rental each : rentals) {
-            totalAmount += each.getAmount();
+            result += each.getAmount();
         }
-        return totalAmount;
+        return result;
     }
 
-    private int calculateTotalFrequentRenterPoints() {
-        int frequentRenterPoints = 0;
+    public int getTotalFrequentRenterPoints() {
+        int result = 0;
         for (Rental each : rentals) {
-            frequentRenterPoints += each.getFrequentRenterPoints();
+            result += each.getFrequentRenterPoints();
         }
-        return frequentRenterPoints;
+        return result;
     }
 }

@@ -6,19 +6,41 @@ public class Movie {
     public static final int CHILDREN = 2;
 
     private String title;
-    private int priceCode;
+    private MovieType movieType;
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        this.priceCode = priceCode;
+        this.movieType = createMovieType(priceCode);
+    }
+
+    private MovieType createMovieType(int priceCode) {
+        switch (priceCode) {
+            case REGULAR:
+                return MovieType.REGULAR;
+            case NEW_RELEASE:
+                return MovieType.NEW_RELEASE;
+            case CHILDREN:
+                return MovieType.CHILDREN;
+            default:
+                throw new IllegalArgumentException("Unknown price code: " + priceCode);
+        }
     }
 
     public int getPriceCode() {
-        return priceCode;
+        switch (movieType) {
+            case REGULAR:
+                return REGULAR;
+            case NEW_RELEASE:
+                return NEW_RELEASE;
+            case CHILDREN:
+                return CHILDREN;
+            default:
+                throw new IllegalStateException("Unknown movie type");
+        }
     }
 
-    public void setPriceCode(int arg) {
-        priceCode = arg;
+    public void setPriceCode(int priceCode) {
+        this.movieType = createMovieType(priceCode);
     }
 
     public String getTitle() {
@@ -26,30 +48,10 @@ public class Movie {
     }
 
     public double getAmount(int daysRented) {
-        double amount = 0;
-        switch (priceCode) {
-            case REGULAR:
-                amount += 2;
-                if (daysRented > 2)
-                    amount += (daysRented - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                amount += daysRented * 3;
-                break;
-            case CHILDREN:
-                amount += 1.5;
-                if (daysRented > 3)
-                    amount += (daysRented - 3) * 1.5;
-                break;
-        }
-        return amount;
+        return movieType.getPriceStrategy().getAmount(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
-        int points = 1;
-        // add bonus for a two days new release rental
-        if ((priceCode == NEW_RELEASE) && daysRented > 1)
-            points++;
-        return points;
+        return movieType.getPriceStrategy().getFrequentRenterPoints(daysRented);
     }
 }
